@@ -1,0 +1,42 @@
+html,body,#app,.screen{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.screen{
+  display: flex;
+  flex-direction: column;
+}
+
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.flex-1{
+  flex: 1;
+}
+
+ab-teilaufgaben{
+  counter-reset: teilaufgaben;
+}
+
+ab-teilaufgaben>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,lower-alpha) ") ";
+}
+
+
+
+@media screen{
+  #print{
+    display: none;
+  }
+}
+
+@media print{
+  #app{
+    display: none;
+  }
+}
