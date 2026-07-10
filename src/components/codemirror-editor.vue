@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {EditorState} from "@codemirror/state"
+import {EditorState} from "@codemirror/state";
 import {
   EditorView, keymap, highlightSpecialChars, drawSelection,
   highlightActiveLine, dropCursor, rectangularSelection,
@@ -28,13 +28,15 @@ import {
   closeBracketsKeymap
 } from "@codemirror/autocomplete"
 import {lintKeymap} from "@codemirror/lint"
-
+import { html } from "@codemirror/lang-html";
+import abHtml from "../functions/ab-html";
 
 
 export default{
   props: {
     syncObject: Object,
-    syncAttribute: String
+    syncAttribute: String,
+    language: String
   },
   components: {
 
@@ -45,6 +47,10 @@ export default{
     }
   },
   mounted(){
+    let lang;
+    if(this.language==="ab-html"){
+      lang=abHtml;
+    }
     this.editor = new EditorView({
       doc: this.syncObject[this.syncAttribute],
       parent: this.$refs.parent,
@@ -54,6 +60,7 @@ export default{
           this.syncObject[this.syncAttribute]=this.getText();
           this.$emit("change");
         }),
+        lang,
         // A line number gutter
         lineNumbers(),
         // A gutter with code folding markers

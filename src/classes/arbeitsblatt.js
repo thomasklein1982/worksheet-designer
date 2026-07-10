@@ -12,6 +12,9 @@ export default class Arbeitsblatt{
       <ab-formel tex="7:4"></ab-formel>
     </ab-teilaufgaben>
   </ab-aufgabe>
+  <ab-grafik min-x="0" max-x="10" karo-papier breite="5cm">
+    <line stroke="black" x1="0" x2="10" y1="0" y2="4"></line>
+  </ab-grafik>
 </ab-arbeitsblatt>`;
     this.js="";
     this.css="";

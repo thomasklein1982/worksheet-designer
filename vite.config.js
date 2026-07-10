@@ -9,10 +9,11 @@ export default defineConfig({
         compilerOptions: {
           // treat all tags with a dash as custom elements
           isCustomElement: (tag) => {
-            return tag.startsWith("ab-")
+            return tag.startsWith("ab-");
           }
         }
       }
     })
   ],
+  base: "./"
 })

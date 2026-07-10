@@ -1,6 +1,6 @@
 <template>
-  <div id="wrapper" v-html="content">
-
+  <div id="wrapper">
+    <div style="transform: scale(0.75); transform-origin: top left;" v-html="content"></div>
   </div>
 </template>
 

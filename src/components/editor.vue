@@ -1,6 +1,7 @@
 <template>
   <div class="screen">
-    <MenuBar 
+    <MenuBar
+      :abs="abs"
       @save="$root.saveAB(currentAB)"
       @rename="$root.renameAB(currentAB)"
       @print="$root.printAB(currentAB)"
@@ -9,7 +10,7 @@
     <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
       
       <template v-for="(ab, i) in abs">
-        <CodemirrorEditor ref="codemirrorEditor" :sync-object="ab" sync-attribute="html" v-show="i===currentABIndex" @change="updatePreview()"/>
+        <CodemirrorEditor ref="codemirrorEditor" :sync-object="ab" sync-attribute="html" v-show="i===currentABIndex" @change="updatePreview()" language="ab-html"/>
       </template>
       <Preview ref="preview"/>
     </div>
@@ -22,6 +23,7 @@ import CodemirrorEditor from './codemirror-editor.vue';
 import MenuBar from './menu-bar.vue';
 import Preview from './preview.vue';
 import Tabs from './tabs.vue';
+import myHtml from '../functions/ab-html.js';
 
 export default{
   components: {
@@ -37,7 +39,8 @@ export default{
   },
   data(){
     return {
-      currentABIndex: 0
+      currentABIndex: 0,
+      myHtml: myHtml
     }
   },  
   methods: {

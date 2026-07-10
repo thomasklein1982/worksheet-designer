@@ -1,10 +1,11 @@
 <template>
-  <h3>Aufgabe {{number}}{{ titel? ':'+titel:'' }}</h3>
+  <h3>Aufgabe {{number}}{{ titel? ': '+titel:'' }}</h3>
   <div><slot></slot></div>
 </template>
 
 <script>
 export default {
+  shadowRoot: false,
   components: {
 
   },
@@ -23,10 +24,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-h1{
-  color: red;
-  font-size: 8px;
-}
-</style>

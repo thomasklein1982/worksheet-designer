@@ -5,6 +5,7 @@
 
 <script>
 export default {
+  shadowRoot: false,
   components: {
 
   },
@@ -18,9 +19,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-h1{
-  
-}
-</style>
