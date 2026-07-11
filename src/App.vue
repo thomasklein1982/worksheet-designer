@@ -18,8 +18,14 @@ export default{
   },
   data(){
     return {
-      abs: []
+      abs: [],
+      cmInPx: 1
     }
+  },
+  mounted(){
+    let div=document.getElementById("div1cm");
+    this.cmInPx=div.offsetWidth;
+    console.log("cm in px",this.cmInPx);
   },
   methods: {
     createAB(){

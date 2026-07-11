@@ -45,7 +45,7 @@ export default{
   },  
   methods: {
     updatePreview(){
-      let t=this.currentAB.html;
+      let t=this.currentAB.realHtml;
       this.$refs.preview.setContent(t);
     },
     selectAB(index){

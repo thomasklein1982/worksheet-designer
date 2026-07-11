@@ -12,11 +12,11 @@ export default {
   props: {
     spalten: {
       type: [String,Number],
-      default: "1"
+      default: "2"
     },
     zeilen: {
       type: [String,Number],
-      default: "1"
+      default: "2"
     }
   },
   data(){

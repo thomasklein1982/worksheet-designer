@@ -30,6 +30,7 @@ import {
 import {lintKeymap} from "@codemirror/lint"
 import { html } from "@codemirror/lang-html";
 import abHtml from "../functions/ab-html";
+import adaptHtmlCode from "../functions/adaptHtmlCode";
 
 
 export default{
@@ -57,7 +58,12 @@ export default{
       extensions: [
         EditorView.updateListener.of((update)=>{
           if(!update.docChanged) return;
-          this.syncObject[this.syncAttribute]=this.getText();
+          let code=this.getText();
+          if(this.syncAttribute==="html"){
+            let tree=update.state.tree;
+            this.syncObject.realHtml=adaptHtmlCode(code,tree);
+          }
+          this.syncObject[this.syncAttribute]=code;
           this.$emit("change");
         }),
         lang,

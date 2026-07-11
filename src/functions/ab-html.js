@@ -17,8 +17,25 @@ const abHtml=html({
       attrs: {
         "titel": null
       },
-      globalAttrs: false
+      globalAttrs: false,
+      children: ["ab-teilaufgaben","div"]
     },
+    "ab-teilaufgaben": {
+      attrs: {
+        "zeilen": ["1","2","3","4","5","6","7"],
+        "spalten": ["1","2","3","4","5","6","7"]
+      },
+      globalAttrs: false,
+      children: ["ab-formel","div"]
+    },
+    "ab-formel": {
+      attrs: {
+        "tex": ["\\frac12-0,45"],
+        "block": null
+      },
+      globalAttrs: false,
+      children: []
+    }
   }
 });
 
