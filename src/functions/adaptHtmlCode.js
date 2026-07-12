@@ -5,10 +5,15 @@ export default function adaptHtmlCode(code,tree){
       if(cursor.name!=="TagName") return;
       let node=cursor.node;
       let openTag=node.parent;
-      if(openTag.name!=="OpenTag") return;
+      let closeTag=null;
       let tag=openTag.parent;
-      let closeTag=tag.lastChild;
-      if(closeTag.name!=="CloseTag") closeTag=null;
+      if(openTag.name==="OpenTag"){
+        closeTag=tag.lastChild;
+        if(closeTag.name!=="CloseTag") closeTag=null;
+      }else if(openTag.name==="SelfClosingTag"){
+
+      }else return;
+      let tagCode=code.substring(tag.from,tag.to);
       let name=code.substring(cursor.from,cursor.to);
       console.log(name);
       if(name in SpecialTags){
@@ -25,6 +30,13 @@ export default function adaptHtmlCode(code,tree){
             name: name,
             from: closeTag.from,
             to: closeTag.to,
+            code: close
+          });
+        }else{
+          nodes.push({
+            name: name,
+            from: tag.to,
+            to: tag.to,
             code: close
           });
         }
@@ -48,13 +60,53 @@ export default function adaptHtmlCode(code,tree){
     console.log(newCode);
     return newCode;
   }catch(e){
-  return code;
-}
+    console.log(e);
+    return code;
+  }
 }
 
 const scale=10;
 
 let SpecialTags={
+  "karopapier": {
+    getCode(node,nodeCode){
+      let propList={
+        "x": {
+          type: Number,
+          default: 0
+        },
+        "y": {
+          type: Number,
+          default: 0
+        },
+        "breite": {
+          type: Number,
+          default: 1
+        },
+        "hoehe": {
+          type: Number,
+          default: 1
+        }
+      };
+      let {props,pt}=getPropsPT(node,nodeCode,propList);
+      return this.createCode(props.x,props.y,props.breite,props.hoehe);
+    },
+    createCode(sx,sy,b,h){
+      let open="<g style='stroke: gray; stroke-width: 0.04'>";
+      let x=sx;
+      for(let i=0;i<=b*2;i++){
+        open+=`<line x1="${x}" y1="${sy}" x2="${x}" y2="${sy+h}" />`;
+        x+=0.5;
+      }
+      let y=sy;
+      for(let i=0;i<=h*2;i++){
+        open+=`<line x1="${sx}" y1="${y}" x2="${sx+b}" y2="${y}" />`;
+        y+=0.5;
+      }
+      let close="</g>";
+      return {open,close};
+    }
+  },
   "kreis": {
     getCode: (node,nodeCode)=>{
       let propList={
@@ -73,7 +125,7 @@ let SpecialTags={
       };
       let {props,pt}=getPropsPT(node,nodeCode,propList);
       let x=props.x; let y=props.y; let r=props.r;
-      let open=`<circle x="${x}" y="${y}" radius="${r}">`;
+      let open=`<circle cx="${x}" cy="${y}" r="${r}">`;
       let close="</circle>";
       return {open,close};
     }
@@ -108,6 +160,10 @@ let SpecialTags={
         "zoom-y": {
           type: Number,
           default: 1
+        },
+        "karopapier": {
+          type: Boolean,
+          default: false
         }
       };
       let {props,pt}=getPropsPT(node,nodeCode,propList);
@@ -119,13 +175,14 @@ let SpecialTags={
       let maxY=props["max-y"];
       let zoomX=props["zoom-x"];
       let zoomY=props["zoom-y"];
+      let karopapier=props.karopapier;
       let sizeX=maxX-minX;
       let sizeY=maxY-minY;
       let width=sizeX*zoomX;
       let height=sizeY*zoomY;
       let viewBox="0 0 "+width*scale+" "+height*scale;
       let transformation="matrix("+(scale)+",0,0,"+(-scale)+","+(-minX*scale)+","+(maxY*scale)+")";
-      let code=`<div style="display: inline-block; position:relative; width: ${width}; height: ${height};${props.style}" ${pt}><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
+      let code=`<div style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${props.style}" ${pt}><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
     <defs>
       <filter x="0" y="0" width="1" height="1" id="white0.5">
         <feFlood flood-color="white" flood-opacity="0.5" result="bg" />
@@ -135,8 +192,12 @@ let SpecialTags={
         </feMerge>
       </filter>
     </defs>
-    <g :transform="${transformation}">
+    <g transform="${transformation}">
       `;
+      if(karopapier){
+        let k=SpecialTags.karopapier.createCode(Math.floor(minX*2)/2, Math.floor(minY*2)/2,Math.ceil(width),Math.ceil(height));
+        code+=k.open+k.close;
+      }
       return {
         open: code,
         close: "</g></svg>"
@@ -165,7 +226,7 @@ function getPropsPT(elementNode,elementCode,props){
           if(p.default) v=p.default; else v=0;
         }
       }else{
-        if(!v) v=p.default; else v=undefined;
+        if(v===undefined) v=p.default;
       }
     }
     res.props[a]=v;
@@ -186,11 +247,15 @@ function getAttributes(elementNode,src){
     let n=node.firstChild;
     name=src.substring(n.from-offset,n.to-offset);
     n=n.nextSibling;
-    n=n.nextSibling;
-    if(n.name==="UnquotedAttributeValue"){
-      value=src.substring(n.from-offset,n.to-offset);
-    }else if(n.name==="AttributeValue"){
-      value=src.substring(n.from+1-offset,n.to-1-offset);
+    if(!n){
+      value=true;
+    }else{
+      n=n.nextSibling;
+      if(n.name==="UnquotedAttributeValue"){
+        value=src.substring(n.from-offset,n.to-offset);
+      }else if(n.name==="AttributeValue"){
+        value=src.substring(n.from+1-offset,n.to-1-offset);
+      }
     }
     attrs[name]=value;
     

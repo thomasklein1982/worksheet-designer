@@ -12,7 +12,7 @@
       <template v-for="(ab, i) in abs">
         <CodemirrorEditor ref="codemirrorEditor" :sync-object="ab" sync-attribute="html" v-show="i===currentABIndex" @change="updatePreview()" language="ab-html"/>
       </template>
-      <Preview ref="preview"/>
+      <Preview ref="preview" v-show="currentAB"/>
     </div>
   </div>
 </template>

@@ -60,7 +60,7 @@ export default{
     },
     printAB(ab){
       let print=document.getElementById("print");
-      print.innerHTML=ab.html;
+      print.innerHTML=ab.realHtml;
       setTimeout(()=>{
         window.print();
       },100);
