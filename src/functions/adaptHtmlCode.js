@@ -65,9 +65,58 @@ export default function adaptHtmlCode(code,tree){
   }
 }
 
-const scale=10;
+const scale=1;
 
 let SpecialTags={
+  "achse": {
+    getCode(node,nodeCode){
+      let propList={
+        "x": {
+          type: Number,
+          default: 0
+        },
+        "y": {
+          type: Number,
+          default: 0
+        },
+        "dx": {
+          type: Number,
+          default: 1
+        },
+        "dy": {
+          type: Number,
+          default: 0
+        },
+        "min": {
+          type: Number,
+          default: 0
+        },
+        "max": {
+          type: Number,
+          default: 10
+        },
+        "schritt": {
+          type: Number,
+          default: 1
+        },
+        "verbergen": {
+          type: String,
+          default: ""
+        }
+      };
+      let {props,pt}=getPropsPT(node,nodeCode,propList);
+      return this.createCode(props.x,props.y,props.dx,props.dy,props.min,props.max,props.schritt,props.verbergen,pt);
+    },
+    createCode(x,y,dx,dy,min,max,schritt,verbergen,pt){
+      let sx=x+min*dx;
+      let sy=y+min*dy;
+      let ex=x+max*dx;
+      let ey=y+max*dy;
+      let open=`<g ${pt}><line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}"></line>`;
+      let close="</g>";
+      return {open,close};
+    }
+  },
   "karopapier": {
     getCode(node,nodeCode){
       let propList={
@@ -89,10 +138,10 @@ let SpecialTags={
         }
       };
       let {props,pt}=getPropsPT(node,nodeCode,propList);
-      return this.createCode(props.x,props.y,props.breite,props.hoehe);
+      return this.createCode(props.x,props.y,props.breite,props.hoehe,pt);
     },
-    createCode(sx,sy,b,h){
-      let open="<g style='stroke: gray; stroke-width: 0.04'>";
+    createCode(sx,sy,b,h,pt){
+      let open="<g style='stroke: gray; stroke-width: 0.04' "+pt+" >";
       let x=sx;
       for(let i=0;i<=b*2;i++){
         open+=`<line x1="${x}" y1="${sy}" x2="${x}" y2="${sy+h}" />`;
@@ -108,7 +157,7 @@ let SpecialTags={
     }
   },
   "kreis": {
-    getCode: (node,nodeCode)=>{
+    getCode(node,nodeCode){
       let propList={
         "x": {
           type: Number,
@@ -125,7 +174,10 @@ let SpecialTags={
       };
       let {props,pt}=getPropsPT(node,nodeCode,propList);
       let x=props.x; let y=props.y; let r=props.r;
-      let open=`<circle cx="${x}" cy="${y}" r="${r}">`;
+      return this.createCode(x,y,r,pt);
+    },
+    createCode(x,y,r,pt){
+      let open=`<circle cx="${x}" cy="${y}" r="${r}" ${pt} >`;
       let close="</circle>";
       return {open,close};
     }
@@ -164,11 +216,13 @@ let SpecialTags={
         "karopapier": {
           type: Boolean,
           default: false
+        },
+        "system": {
+          type: Boolean,
+          default: false
         }
       };
       let {props,pt}=getPropsPT(node,nodeCode,propList);
-      console.log(props);
-      console.log(pt);
       let minX=props["min-x"];
       let maxX=props["max-x"];
       let minY=props["min-y"];
@@ -176,6 +230,7 @@ let SpecialTags={
       let zoomX=props["zoom-x"];
       let zoomY=props["zoom-y"];
       let karopapier=props.karopapier;
+      let system=props.system;
       let sizeX=maxX-minX;
       let sizeY=maxY-minY;
       let width=sizeX*zoomX;
@@ -192,11 +247,17 @@ let SpecialTags={
         </feMerge>
       </filter>
     </defs>
-    <g transform="${transformation}">
+    <g transform="${transformation}" style="stroke: black; fill: none; stroke-width: 0.06">
       `;
       if(karopapier){
-        let k=SpecialTags.karopapier.createCode(Math.floor(minX*2)/2, Math.floor(minY*2)/2,Math.ceil(width),Math.ceil(height));
+        let k=SpecialTags.karopapier.createCode(Math.floor(minX*2)/2, Math.floor(minY*2)/2,Math.ceil(width),Math.ceil(height),"");
         code+=k.open+k.close;
+      }
+      if(system){
+        let achse=SpecialTags.achse.createCode(0,0,1,0,minX,maxX,1,"","");
+        code+=achse.open+achse.close;
+        achse=SpecialTags.achse.createCode(0,0,0,1,minY,maxY,1,"","");
+        code+=achse.open+achse.close;
       }
       return {
         open: code,

@@ -21,3 +21,4 @@ customElements.define("ab-formel",defineCustomElement(AbFormelCe));
 //customElements.define("grafik-grid",defineCustomElement(GrafikGridCe));
 //customElements.define("grafik-achse",defineCustomElement(GrafikAchseCe));
 //customElements.define("grafik-system",defineCustomElement(GrafikSystemCe));
+
