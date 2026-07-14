@@ -30,7 +30,7 @@ import {
 import {lintKeymap} from "@codemirror/lint"
 import { html } from "@codemirror/lang-html";
 import abHtml from "../functions/ab-html";
-import adaptHtmlCode from "../functions/adaptHtmlCode";
+import createHtmlCode from "../ab-components/createHtmlCode";
 
 
 export default{
@@ -52,19 +52,23 @@ export default{
     if(this.language==="ab-html"){
       lang=abHtml;
     }
+    let timer=null;
     this.editor = new EditorView({
       doc: this.syncObject[this.syncAttribute],
       parent: this.$refs.parent,
       extensions: [
         EditorView.updateListener.of((update)=>{
           if(!update.docChanged) return;
-          let code=this.getText();
-          if(this.syncAttribute==="html"){
-            let tree=update.state.tree;
-            this.syncObject.realHtml=adaptHtmlCode(code,tree);
-          }
-          this.syncObject[this.syncAttribute]=code;
-          this.$emit("change");
+          if(timer) clearTimeout(timer);
+          timer=setTimeout(()=>{
+            let code=this.getText();
+            if(this.syncAttribute==="html"){
+              let tree=update.state.tree;
+              this.syncObject.realHtml=createHtmlCode(code,tree);
+            }
+            this.syncObject[this.syncAttribute]=code;
+            this.$emit("change");
+          },500);
         }),
         lang,
         // A line number gutter

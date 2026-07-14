@@ -59,11 +59,18 @@ export default{
       return -1;
     },
     printAB(ab){
-      let print=document.getElementById("print");
-      print.innerHTML=ab.realHtml;
-      setTimeout(()=>{
-        window.print();
-      },100);
+      let code=ab.getFullHtmlCode(true);
+
+      const blob = URL.createObjectURL(
+        new Blob([code], { type: "text/html" })
+      );
+      window.open(blob);
+      //URL.revokeObjectURL(blob);
+      // let print=document.getElementById("print");
+      // print.innerHTML=ab.realHtml;
+      // setTimeout(()=>{
+      //   window.print();
+      // },100);
     },
     async openAB(){
       let f=await upload();

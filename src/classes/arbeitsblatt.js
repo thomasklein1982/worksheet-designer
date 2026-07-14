@@ -4,21 +4,49 @@ export default class Arbeitsblatt{
   constructor(){
     this.name="AB";
     this.assets=[];
-    this.html=`<ab-arbeitsblatt titel="Mein Arbeitsblatt">
-  <ab-aufgabe>
+    this.html=`<arbeitsblatt titel="Mein Arbeitsblatt">
+  <aufgabe>
     Berechne.
-    <ab-teilaufgaben zeilen="1" spalten="2">
-      <ab-formel tex="\\frac12-0,45"></ab-formel>
-      <ab-formel tex="7:4"></ab-formel>
-    </ab-teilaufgaben>
-  </ab-aufgabe>
-  <ab-grafik min-x=0 max-x=10 min-y=0 max-y=10>
+    <abc zeilen="1" spalten="2">
+      <formel>\\frac12-0,45</formel>
+      <formel>7:4</formel>
+    </abc>
+  </aufgabe>
+  <grafik min-x=0 max-x=10 min-y=0 max-y=10>
     <kreis x=0 y=0 r=4 />
-  </ab-grafik>
-</ab-arbeitsblatt>`;
+  </grafik>
+</arbeitsblatt>`;
     this.realHtml=this.html;
     this.js="";
     this.css="";
+  }
+  getFullHtmlCode(printButton){
+    let code="";
+    if(printButton){
+      code+="<button class='no-print' onclick='window.print()'>Drucken</button>";
+    }
+    code+=this.realHtml;
+    return `<!DOCTYPE html>
+<html>
+  <head>
+    ${window.additionalCode}
+    <style>
+      @media print{
+        .no-print{
+          display: none;
+        }
+      }
+      @media screen{
+        .only-print{
+          display: none;
+        }
+      }
+    </style>
+    
+  </head>
+  <body>${code}</body><script>
+      //katex.render("\\\\pm\\\\int\\\\limits_2^5 f(x) dx", document.body);
+    </script></html>`;
   }
   getSaveObject(){
     let obj={

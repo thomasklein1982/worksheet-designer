@@ -22,3 +22,14 @@ customElements.define("ab-formel",defineCustomElement(AbFormelCe));
 //customElements.define("grafik-achse",defineCustomElement(GrafikAchseCe));
 //customElements.define("grafik-system",defineCustomElement(GrafikSystemCe));
 
+async function fetchFiles(){
+  let f;
+  f=await fetch("./katex/katex.min.js");
+  window.additionalCode="<script>\n"+await f.text()+"\n</script>\n";
+  f=await fetch("./katex/katex.min.css");
+  window.additionalCode+="<style>\n"+await f.text()+"\n</style>";
+  f=await fetch("./katex/fonts.css");
+  window.additionalCode+="<style>\n"+await f.text()+"\n</style>";
+}
+
+setTimeout(fetchFiles,100);
