@@ -39,7 +39,8 @@ export default{
     let height=sizeY*zoomY;
     let viewBox="0 0 "+width+" "+height;
     let transformation="matrix("+(1)+",0,0,"+(-1)+","+(-minX)+","+(maxY)+")";
-    let code=`<div style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${style}" ${pt}><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
+    let code=`<div style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${style}" ${pt}>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
   <defs>
     <filter x="0" y="0" width="1" height="1" id="white0.5">
       <feFlood flood-color="white" flood-opacity="0.5" result="bg" />
@@ -56,7 +57,7 @@ export default{
     });
     return {
       open: code,
-      close: "</g></svg>"
+      close: "</g></svg></div>"
     };
   },
   createFromHtml(node,nodeCode,scope){

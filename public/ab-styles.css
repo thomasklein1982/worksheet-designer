@@ -7,6 +7,7 @@
 html,body{
   margin: 0;
   padding: 0;
+  print-color-adjust: exact;
 }
 
 .arbeitsblatt{
@@ -40,6 +41,17 @@ html,body{
   break-after: page;
   break-before: page;
   break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  margin: 0;
+  padding: 0;
+}
+
+.seiteninneres{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .kopfzeile,.fusszeile{
@@ -51,10 +63,10 @@ html,body{
 .kopfzeile>*:nth-child(1), .fusszeile>*:nth-child(1){
   justify-self: left;
 }
-.kopfzeile>*:nth-child(2), .kopfzeile>*:nth-child(2){
+.kopfzeile>*:nth-child(2), .fusszeile>*:nth-child(2){
   justify-self: center;
 }
-.kopfzeile>*:nth-child(3), .kopfzeile>*:nth-child(3){
+.kopfzeile>*:nth-child(3), .fusszeile>*:nth-child(3){
   justify-self: right;
 }
 
@@ -64,6 +76,7 @@ html,body{
 
 .seiteninhalt{
   background-color: yellow;
+  flex: 1;
 }
 
 .fusszeile{

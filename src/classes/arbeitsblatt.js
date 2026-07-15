@@ -4,16 +4,53 @@ export default class Arbeitsblatt{
   constructor(){
     this.name="AB";
     this.assets={};
-    this.html=`<aufgabe>
-  Berechne.
-  <abc zeilen="1" spalten="2">
-    <formel>\\frac12-0,45</formel>
-    <formel>7:4</formel>
-  </abc>
-</aufgabe>
-<grafik min-x=0 max-x=10 min-y=0 max-y=10>
-  <kreis x=0 y=0 r=4 />
-</grafik>`;
+    this.html=`<style>
+  .seiteninneres{
+    margin: 1cm;
+  }
+</style>
+
+<fusszeile>
+  <div>Links</div>
+  <div>Seite #seiten</div>
+  <div>Rechts</div>
+</fusszeile>
+
+<kopfzeile>
+  <div>
+    <bild datei="https://thomaskl.uber.space/Apps/java-app/Logo-white.png" hoehe=2cm></bild>
+  </div>
+  <div>Physik 7d</div>
+  <div>Frau Klein</div>
+</kopfzeile>
+
+<seite>
+  <aufgabe>
+    Berechne.
+    <abc zeilen="1" spalten="2">
+      <formel>\\frac12-0,45</formel>
+      <formel>7:4</formel>
+    </abc>
+    <bild datei="streckenplan" breite="4cm"/>
+  </aufgabe>
+  <grafik min-x=0 max-x=10 min-y=0 max-y=10>
+    <kreis x=0 y=0 r=4 />
+  </grafik>
+</seite>
+
+<seite>
+  <aufgabe>
+    Berechne.
+    <abc zeilen="1" spalten="2">
+      <formel>\\frac12-0,45</formel>
+      <formel>7:4</formel>
+    </abc>
+    <bild datei="streckenplan" breite="4cm"/>
+  </aufgabe>
+  <grafik min-x=0 max-x=10 min-y=0 max-y=10>
+    <kreis x=0 y=0 r=4 />
+  </grafik>
+</seite>`;
     this.realHtml=this.html;
     this.js="";
     this.css="";
@@ -21,7 +58,7 @@ export default class Arbeitsblatt{
   getFullHtmlCode(printButton){
     let code="";
     if(printButton){
-      code+="<div class='no-print'><button onclick='window.print()'>Drucken</button></div>";
+      code+="<div class='no-print'><button style='height: 1cm' onclick='window.print()'>Drucken</button></div>";
     }
     code+=this.realHtml;
     return `<!DOCTYPE html>

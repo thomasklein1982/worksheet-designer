@@ -6,7 +6,7 @@ export default{
     
   },
   create(pt,scope){
-    let open=`<div class='seite'>`;
+    let open=`<div class='seite'><div class="seiteninneres">`;
     let tag=scope.templates.kopfzeile;
     if(tag){
       let code=parseNode(scope.code,tag,scope,true);
@@ -19,7 +19,7 @@ export default{
       let code=parseNode(scope.code,tag,scope,true);
       close+=code;
     }
-    close+=`</div>`;
+    close+=`</div></div>`;
     return {
       open, close
     };
