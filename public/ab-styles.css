@@ -1,0 +1,71 @@
+@page{
+  size: 21cm 29.7cm;
+  margin: 0cm;
+  padding: 0cm;
+}
+
+html,body{
+  margin: 0;
+  padding: 0;
+}
+
+.arbeitsblatt{
+  font-size: 12pt;
+  font-family: sans-serif;
+}
+
+.teilaufgaben{
+  counter-reset: teilaufgaben;
+  display: grid; 
+  grid-auto-flow: column;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.teilaufgaben>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,lower-alpha) ") ";
+}
+
+.karopapier{
+  stroke: gray; 
+  stroke-width: 0.04;
+}
+
+.pagebreak{
+  break-after: page;
+}
+
+.seite{
+  break-after: page;
+  break-before: page;
+  break-inside: avoid;
+}
+
+.kopfzeile,.fusszeile{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+.kopfzeile>*:nth-child(1), .fusszeile>*:nth-child(1){
+  justify-self: left;
+}
+.kopfzeile>*:nth-child(2), .kopfzeile>*:nth-child(2){
+  justify-self: center;
+}
+.kopfzeile>*:nth-child(3), .kopfzeile>*:nth-child(3){
+  justify-self: right;
+}
+
+.kopfzeile{
+  background-color: red;
+}
+
+.seiteninhalt{
+  background-color: yellow;
+}
+
+.fusszeile{
+  background-color: lime;
+}

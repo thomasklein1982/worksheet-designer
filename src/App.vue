@@ -28,6 +28,9 @@ export default{
     console.log("cm in px",this.cmInPx);
   },
   methods: {
+    getCurrentAB(){
+      return this.$refs.editor.currentAB;
+    },
     createAB(){
       let namePrefix="AB";
       let name=namePrefix;

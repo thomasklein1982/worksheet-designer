@@ -18,7 +18,7 @@ import {
   bracketMatching, foldGutter, foldKeymap
 } from "@codemirror/language"
 import {
-  defaultKeymap, history, historyKeymap
+  defaultKeymap, history, historyKeymap, indentWithTab
 } from "@codemirror/commands"
 import {
   searchKeymap, highlightSelectionMatches
@@ -64,7 +64,7 @@ export default{
             let code=this.getText();
             if(this.syncAttribute==="html"){
               let tree=update.state.tree;
-              this.syncObject.realHtml=createHtmlCode(code,tree);
+              this.syncObject.realHtml=createHtmlCode(this.$root.getCurrentAB(),code,tree);
             }
             this.syncObject[this.syncAttribute]=code;
             this.$emit("change");
@@ -119,7 +119,8 @@ export default{
           // Autocompletion keys
           ...completionKeymap,
           // Keys related to the linter system
-          ...lintKeymap
+          ...lintKeymap,
+          indentWithTab
         ])
       ],
     });

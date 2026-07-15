@@ -5,6 +5,7 @@
       @save="$root.saveAB(currentAB)"
       @rename="$root.renameAB(currentAB)"
       @print="$root.printAB(currentAB)"
+      @assets="$refs.assetsmanager.open(currentAB)"
     />
     <Tabs :abs="abs" :selected-index="currentABIndex" @change-tab="selectAB"/>
     <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
@@ -14,6 +15,7 @@
       </template>
       <Preview ref="preview" v-show="currentAB"/>
     </div>
+    <AssetsManager ref="assetsmanager"/>
   </div>
 </template>
 
@@ -24,10 +26,11 @@ import MenuBar from './menu-bar.vue';
 import Preview from './preview.vue';
 import Tabs from './tabs.vue';
 import myHtml from '../functions/ab-html.js';
+import AssetsManager from './assets-manager.vue';
 
 export default{
   components: {
-    CodemirrorEditor, MenuBar, Preview, Tabs
+    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager
   },
   props: {
     abs: Array
