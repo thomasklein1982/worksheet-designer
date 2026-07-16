@@ -6,7 +6,9 @@ export default{
     
   },
   create(pt,scope){
-    let open=`<div class='seite'><div class="seiteninneres">`;
+    scope.variables.seite++;
+    scope.endVariables.seiten++;
+    let open=`<div class='papier'><div class="seite">`;
     let tag=scope.templates.kopfzeile;
     if(tag){
       let code=parseNode(scope.code,tag,scope,true);

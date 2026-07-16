@@ -1,7 +1,9 @@
 import abc from "./abc";
+import abstand from "./abstand";
 import arbeitsblatt from "./arbeitsblatt";
 import aufgabe from "./aufgabe";
 import bild from "./bild";
+import box from "./box";
 import fusszeile from "./fusszeile";
 import grafik from "./grafik";
 import karopapier from "./karopapier";
@@ -11,7 +13,7 @@ import ksystem from "./ksystem";
 import seite from "./seite";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, kopfzeile, fusszeile
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, kopfzeile, fusszeile, box, abstand
 };
 
 export default function createHtmlCode(ab,code,tree){
@@ -20,9 +22,13 @@ export default function createHtmlCode(ab,code,tree){
     layers: [],
     interpolates: [],
     ab,
-    counter: {
-      aufgaben: 0,
-      seiten: 0
+    variables: {
+      aufgabe: 0,
+      seite: 0
+    },
+    endVariables: {
+      seiten: 0,
+      aufgaben: 0
     },
     templates: {
       kopfzeile: null, 
@@ -39,6 +45,12 @@ export default function createHtmlCode(ab,code,tree){
   }
   // console.log(newCode);
   newCode+=`<script>
+  let scope={
+    variables: {
+      seiten: ${scope.endVariables.seiten},
+      aufgaben: ${scope.endVariables.aufgaben}
+    }
+  }
   let macros={
     
   };
@@ -56,15 +68,19 @@ export default function createHtmlCode(ab,code,tree){
   }
   function replaceInterpolate(index,code){
     try{
-      eval("window.value="+JSON.stringify(code));
+      code=replaceScopeVariables(code,scope);
+      eval("window.value="+code);
     }catch(e){
       window.value="Interpolationsfehler "+code;
     }
     let el=document.getElementById("interpolate-"+index);
     el.innerHTML=window.value;
-  }`
+  }`;
+  newCode+="\n"+replaceScopeVariables.toString();
+  newCode+="\n\n"+parseVariable.toString()+"\n\n";
+
   for(let i=0;i<scope.interpolates.length;i++){
-    newCode+=`replaceInterpolate(${i},${scope.interpolates[i]});`;
+    newCode+=`replaceInterpolate(${i},"${scope.interpolates[i]}");`;
   }
   newCode+=`setTimeout(()=>{
     let formulas=document.getElementsByTagName("formel");
@@ -185,10 +201,48 @@ function interpolateText(text,scope){
     let it=text.substring(start+2,end);
     newText+=text.substring(index,start)+"<span id='interpolate-"+scope.interpolates.length+"'></span>";
     index=end+2;
+    it=replaceScopeVariables(it,scope);
     scope.interpolates.push(it);
   }
   newText+=text.substring(index);
   return newText;
+}
+
+function replaceScopeVariables(text,scope){
+  let newText="";
+  const len=text.length;
+  let start=0;
+  while(start<len){
+    let pos=text.indexOf("#",start);
+    if(pos<0) break;
+    newText+=text.substring(start,pos);
+    start=pos+1;
+    let w=parseVariable(text,start);
+    start+=w.length;
+    if(!w) continue;
+    if(w in scope.variables){
+      newText+=scope.variables[w];
+    }else if(w in scope.endVariables){
+      newText+="#"+w;
+    }
+  }
+  newText+=text.substring(start);
+  return newText;
+}
+
+function parseVariable(text,start){
+  let len=text.length;
+  let w="";
+  while(start<len){
+    let c=text.codePointAt(start);
+    if(c===95 || c>=48 && c<=57 || c>=97 && c<=122){
+      w+=text.charAt(start);
+    }else{
+      break;
+    }
+    start++;
+  }
+  return w;
 }
 
 const scale=1;

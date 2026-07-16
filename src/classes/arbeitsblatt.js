@@ -5,20 +5,20 @@ export default class Arbeitsblatt{
     this.name="AB";
     this.assets={};
     this.html=`<style>
-  .seiteninneres{
+  .seite{
     margin: 1cm;
   }
 </style>
 
 <fusszeile>
   <div>Links</div>
-  <div>Seite #seiten</div>
+  <div>Seite {{#seite}} von {{#seiten}}</div>
   <div>Rechts</div>
 </fusszeile>
 
 <kopfzeile>
   <div>
-    <bild datei="https://thomaskl.uber.space/Apps/java-app/Logo-white.png" hoehe=2cm></bild>
+    <bild datei="https://thomaskl.uber.space/Apps/java-app/Logo.png" hoehe=2cm></bild>
   </div>
   <div>Physik 7d</div>
   <div>Frau Klein</div>
@@ -27,8 +27,8 @@ export default class Arbeitsblatt{
 <seite>
   <aufgabe>
     Berechne.
-    <abc zeilen="1" spalten="2">
-      <formel>\\frac12-0,45</formel>
+    <abc zeilen=1 spalten=2>
+      <formel>\\frac12-0{,}45</formel>
       <formel>7:4</formel>
     </abc>
     <bild datei="streckenplan" breite="4cm"/>
@@ -42,7 +42,7 @@ export default class Arbeitsblatt{
   <aufgabe>
     Berechne.
     <abc zeilen="1" spalten="2">
-      <formel>\\frac12-0,45</formel>
+      <formel>\\frac12-0{,}45</formel>
       <formel>7:4</formel>
     </abc>
     <bild datei="streckenplan" breite="4cm"/>
@@ -55,10 +55,12 @@ export default class Arbeitsblatt{
     this.js="";
     this.css="";
   }
-  getFullHtmlCode(printButton){
+  getFullHtmlCode(production){
     let code="";
-    if(printButton){
-      code+="<div class='no-print'><button style='height: 1cm' onclick='window.print()'>Drucken</button></div>";
+    if(production){
+      code+=`<div class='no-print'>
+  <button style='height: 1cm' onclick='window.print()'>Drucken</button>
+</div>`;
     }
     code+=this.realHtml;
     return `<!DOCTYPE html>
@@ -66,16 +68,7 @@ export default class Arbeitsblatt{
   <head>
     ${window.additionalCode}
     <style>
-      @media print{
-        .no-print{
-          display: none;
-        }
-      }
-      @media screen{
-        .only-print{
-          display: none;
-        }
-      }
+      
     </style>
     
   </head>

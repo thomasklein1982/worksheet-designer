@@ -1,13 +1,27 @@
-@page{
-  size: 21cm 29.7cm;
+/* @page{
   margin: 0cm;
   padding: 0cm;
-}
+} */
 
 html,body{
   margin: 0;
   padding: 0;
-  print-color-adjust: exact;
+  print-color-adjust: exact !important;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+@media print{
+  .no-print{
+    display: none;
+  }
+}
+@media screen{
+  .only-print{
+    display: none;
+  }
 }
 
 .arbeitsblatt{
@@ -37,7 +51,14 @@ html,body{
   break-after: page;
 }
 
-.seite{
+.abstand-x{
+  display: inline-block;
+}
+.abstand-y{
+  display: block;
+}
+
+.papier{
   break-after: page;
   break-before: page;
   break-inside: avoid;
@@ -46,18 +67,30 @@ html,body{
   height: 100svh;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
-.seiteninneres{
+@media screen{
+  .papier{
+    border: 1pt dotted gray;
+    height: 29.7cm;
+  }
+}
+
+.seite{
   display: flex;
   flex-direction: column;
   flex: 1;
+  position: relative;
+  font-family: sans-serif;
+  font-size: 12pt;
 }
 
 .kopfzeile,.fusszeile{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
+  position: relative;
 }
 
 .kopfzeile>*:nth-child(1), .fusszeile>*:nth-child(1){
@@ -71,14 +104,11 @@ html,body{
 }
 
 .kopfzeile{
-  background-color: red;
 }
 
 .seiteninhalt{
-  background-color: yellow;
   flex: 1;
 }
 
 .fusszeile{
-  background-color: lime;
 }

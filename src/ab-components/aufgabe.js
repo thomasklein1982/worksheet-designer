@@ -13,9 +13,10 @@ export default {
   },
   create(titel,name,pt,scope){
     let open=`<div ${pt}>`;
+    scope.variables.aufgabe++;
+    scope.endVariables.aufgaben++;
     if(titel){
-      scope.counter.aufgaben++;
-      titel=titel.replace(/#N/g,scope.counter.aufgaben);
+      titel=titel.replace(/#N/g,scope.variables.aufgabe);
       open+=`<h2 class="aufgabentitel">${titel}</h2>`;
     }
     let close=`</div>`;

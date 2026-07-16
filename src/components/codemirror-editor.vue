@@ -71,6 +71,7 @@ export default{
           },500);
         }),
         lang,
+        EditorView.lineWrapping,
         // A line number gutter
         lineNumbers(),
         // A gutter with code folding markers

@@ -1,10 +1,12 @@
 <template>
-  <div id="wrapper">
-    <div id="controls">
+  <div id="wrapper" class="flex-container-column">
+    <div id="controls" >
       <input type="range" v-model="scale">
     </div>
-    <div ref="content" style="transform-origin: top left; aspect-ratio: 21/29.7; border: 1pt solid black; width: 21cm; padding: 1cm" :style="{transform: 'scale('+(scale/100)+')'}" >
-      
+    <div id="scroll" >
+      <div ref="content"  style="transform-origin: top left; aspect-ratio: 21/29.7; border: 1pt solid black; width: 21cm; height: 100%;" :style="{transform: 'scale('+(realScale)+')', height: (100/realScale-2)+'%'}" >
+        
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +17,10 @@ export default{
 
   },
   computed: {
+    realScale(){
+      console.log("realScale",this.scale,(this.scale*1+25)/125.0)
+      return (this.scale*1+25)/125.0;
+    }
   },
   data(){
     return {
@@ -53,5 +59,9 @@ export default{
   right: 0;
   top: 0;
   z-index: 1;
+}
+#scroll{
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 </style>
