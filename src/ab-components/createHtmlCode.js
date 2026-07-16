@@ -10,10 +10,11 @@ import karopapier from "./karopapier";
 import kopfzeile from "./kopfzeile";
 import kreis from "./kreis";
 import ksystem from "./ksystem";
+import punkte from "./punkte";
 import seite from "./seite";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte
 };
 
 export default function createHtmlCode(ab,code,tree){
@@ -24,11 +25,13 @@ export default function createHtmlCode(ab,code,tree){
     ab,
     variables: {
       aufgabe: 0,
-      seite: 0
+      seite: 0,
+      punkte: 0
     },
     endVariables: {
       seiten: 0,
-      aufgaben: 0
+      aufgaben: 0,
+      gesamtpunkte: 0
     },
     templates: {
       "kopfzeile-links": null,
@@ -52,7 +55,8 @@ export default function createHtmlCode(ab,code,tree){
   let scope={
     variables: {
       seiten: ${scope.endVariables.seiten},
-      aufgaben: ${scope.endVariables.aufgaben}
+      aufgaben: ${scope.endVariables.aufgaben},
+      gesamtpunkte: ${scope.endVariables.gesamtpunkte},
     }
   }
   let macros={
@@ -235,15 +239,18 @@ function interpolateText(text,scope){
   let index=0;
   while(true){
     start=text.indexOf(open,start+1);
-    while(text.charAt(start+2)==="{") start++;
     if(start<0) break;
+    while(text.charAt(start+2)==="{") start++;
     end=text.indexOf(close,start+1);
     if(end<0) break;
     let it=text.substring(start+2,end);
-    newText+=text.substring(index,start)+"<span id='interpolate-"+scope.interpolates.length+"'></span>";
+    newText+=text.substring(index,start);
+    if(it){
+      newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
+      it=replaceScopeVariables(it,scope);
+      scope.interpolates.push(it);
+    }
     index=end+2;
-    it=replaceScopeVariables(it,scope);
-    scope.interpolates.push(it);
   }
   newText+=text.substring(index);
   return newText;

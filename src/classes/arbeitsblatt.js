@@ -5,24 +5,24 @@ export default class Arbeitsblatt{
     this.name="AB";
     this.assets={};
     this.html=`<style>
-  .seite{
-    margin: 1cm;
+  .seiteninhalt{
+    margin: 1cm 2cm 1cm 2cm;
+  }
+  .kopfzeile{
+    background-color: lightgrey;
+    padding-left: 1cm;
+    padding-right: 1cm;
+  }
+  .fusszeile{
+    padding-bottom: 1cm;
   }
 </style>
 
-<fusszeile>
-  <div>Links</div>
-  <div>Seite {{#seite}} von {{#seiten}}</div>
-  <div>Rechts</div>
-</fusszeile>
+<fusszeile>Seite {{#seite}} von {{#seiten}}</fusszeile>
 
-<kopfzeile>
-  <div>
-    <bild datei="https://thomaskl.uber.space/Apps/java-app/Logo.png" hoehe=2cm></bild>
-  </div>
-  <div>Physik 7d</div>
-  <div>Frau Klein</div>
-</kopfzeile>
+<kopfzeile links>Mathematik 7a</kopfzeile>
+<kopfzeile><h2>Wiederholung Bruchrechnung</h1></kopfzeile>
+<kopfzeile rechts>Frau Klein</kopfzeile>
 
 <seite>
   <aufgabe>

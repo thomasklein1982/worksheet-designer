@@ -11,6 +11,8 @@
   "dependencies": {
     "@codemirror/lang-html": "^6.4.11",
     "codemirror": "^6.0.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "katex": "^0.13.24",
     "vatex": "^0.1.0",
     "vue": "^3.5.39"

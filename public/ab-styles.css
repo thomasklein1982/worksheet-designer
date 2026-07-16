@@ -86,11 +86,15 @@ html,body{
   font-size: 12pt;
 }
 
+.seiteninhalt{
+  flex: 1;
+}
+
 .kopfzeile,.fusszeile{
   display: grid;
   align-items: center;
   position: relative;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 
 .fusszeile-links,.kopfzeile-links{
@@ -120,12 +124,34 @@ html,body{
   justify-self: right;
 } */
 
-.kopfzeile{
+.aufgabennummer{
+  /* border: 1pt solid black; */
+  border-radius: 0.2rem;
+  position: absolute;
+  transform: translate(-120%,-0.2rem);
+  min-width: 2em;
+  padding: 0.2rem;
+  font-weight: bold;
+  text-align: center;
 }
 
-.seiteninhalt{
-  flex: 1;
+.punkte{
+  float: right;
+  transform: translate(120%,-0.2rem);
+  min-width: 2em;
+  padding: 0.2rem;
+  font-weight: bold;
+  text-align: center;
 }
 
-.fusszeile{
+.punkte::before{
+  content: "(";
+}
+
+.punkte::after{
+  content: " P)";
+}
+
+.aufgabennummer::before{
+  content: "A"
 }

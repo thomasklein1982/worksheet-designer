@@ -25,7 +25,8 @@ export default{
   data(){
     return {
       content: "",
-      scale: 75
+      scale: 40,
+      iframe: null
     }
   },
   methods: {
@@ -33,6 +34,7 @@ export default{
       //this.$refs.content.$el.innerHTML=t;
       this.content=t;
       let iframe=document.createElement("iframe");
+      this.iframe=iframe;
       iframe.style="background-color: white; width: 100%; height: 100%; overflow: auto";
       if(this.$refs.content.firstChild){
         this.$refs.content.removeChild(this.$refs.content.firstChild);

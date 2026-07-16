@@ -6,6 +6,8 @@
       @rename="$root.renameAB(currentAB)"
       @print="$root.printAB(currentAB)"
       @assets="$refs.assetsmanager.open(currentAB)"
+      @export="$root.exportAB(currentAB)"
+      @close="closeAB(currentABIndex)"
     />
     <Tabs :abs="abs" :selected-index="currentABIndex" @change-tab="selectAB"/>
     <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
@@ -57,6 +59,13 @@ export default{
         this.$refs.codemirrorEditor[index].updateText();
         this.updatePreview();
       })
+    },
+    closeAB(index){
+      this.abs.splice(index,1);
+      if(this.currentABIndex===index && index>=this.abs.length){
+        this.currentABIndex--;
+        if(this.currentABIndex<0) this.currentABIndex=0;
+      }
     }
   }
 }

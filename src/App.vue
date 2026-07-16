@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import jsPDF from 'jspdf';
 import Arbeitsblatt from './classes/arbeitsblatt.js';
 import Editor from './components/editor.vue';
 import { download, upload } from './functions/helper.js';
+import html2canvas from 'html2canvas';
 
 export default{
   components: {
@@ -60,6 +62,45 @@ export default{
         if(a.name===name) return i;
       }
       return -1;
+    },
+    async exportAB(ab){
+      let code=ab.getFullHtmlCode(true);
+      //const doc=new jsPDF();
+      let body=this.$refs.editor.$refs.preview.iframe.contentWindow.document.body;
+      let seiten=body.querySelectorAll(".papier");
+      const pdf = new jsPDF("portrait", "mm", "a4");
+      let pdfHeight=pdf.internal.pageSize.height;
+      let pdfWidth=pdf.internal.pageSize.width;
+      for(let j=1;j<seiten.length;j++){
+          let seite=seiten[j];
+          seite.style.display="none";
+      }
+      for(let i=0;i<seiten.length;i++){
+        if(i>0) pdf.addPage();
+        for(let j=0;j<i;j++){
+          let seite=seiten[j];
+          seite.style.display="none";
+        }
+        seiten[i].style.display="";
+        
+        let seite=seiten[i];
+        const canvas = await html2canvas(seite, {
+          scale: 2, // 2x resolution for sharper output
+          useCORS: true, // Enable cross-origin images
+          logging: false,
+          backgroundColor: "#ffffff",
+        });
+        
+        const imgData = canvas.toDataURL("image/png");
+
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, 'someAlias', 'FAST');
+      }
+      //doc.html(code,0,0);
+      for(let j=0;j<seiten.length;j++){
+          let seite=seiten[j];
+          seite.style.display="";
+      }
+      pdf.save(ab.name+".pdf");
     },
     printAB(ab){
       let code=ab.getFullHtmlCode(true);

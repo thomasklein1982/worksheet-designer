@@ -12,12 +12,12 @@ export default {
     }
   },
   create(titel,name,pt,scope){
-    let open=`<div ${pt}>`;
+    let open=`<div class="aufgabe" ${pt}>`;
     scope.variables.aufgabe++;
     scope.endVariables.aufgaben++;
-    if(titel){
-      titel=titel.replace(/#N/g,scope.variables.aufgabe);
-      open+=`<h2 class="aufgabentitel">${titel}</h2>`;
+    open+=`<span class="aufgabennummer">${scope.variables.aufgabe}</span>`;
+    if(titel!==null){
+      open+=`<span class="aufgabentitel">${titel}</span><div></div>`;
     }
     let close=`</div>`;
     setInScope(scope,"aufgabe",{
