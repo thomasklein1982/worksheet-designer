@@ -13,7 +13,7 @@ import ksystem from "./ksystem";
 import seite from "./seite";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, kopfzeile, fusszeile, box, abstand
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile
 };
 
 export default function createHtmlCode(ab,code,tree){
@@ -31,8 +31,12 @@ export default function createHtmlCode(ab,code,tree){
       aufgaben: 0
     },
     templates: {
-      kopfzeile: null, 
-      fusszeile: null
+      "kopfzeile-links": null,
+      "kopfzeile-rechts": null,
+      "kopfzeile-mitte": null,
+      "fusszeile-links": null,
+      "fusszeile-rechts": null,
+      "fusszeile-mitte": null,
     },
     code
   };
@@ -71,13 +75,49 @@ export default function createHtmlCode(ab,code,tree){
       code=replaceScopeVariables(code,scope);
       eval("window.value="+code);
     }catch(e){
-      window.value="Interpolationsfehler "+code;
+      window.value="Interpolationsfehler "+code+": "+e;
     }
     let el=document.getElementById("interpolate-"+index);
     el.innerHTML=window.value;
   }`;
-  newCode+="\n"+replaceScopeVariables.toString();
-  newCode+="\n\n"+parseVariable.toString()+"\n\n";
+  //muss angepasst werden mit Funktionen unten:
+  newCode+=`
+function replaceScopeVariables(text,scope){
+  let newText="";
+  const len=text.length;
+  let start=0;
+  while(start<len){
+    let pos=text.indexOf("#",start);
+    if(pos<0) break;
+    newText+=text.substring(start,pos);
+    start=pos+1;
+    let w=parseVariable(text,start);
+    start+=w.length;
+    if(!w) continue;
+    if(w in scope.variables){
+      newText+=scope.variables[w];
+    }else if(w in scope.endVariables){
+      newText+="#"+w;
+    }
+  }
+  newText+=text.substring(start);
+  return newText;
+}
+
+function parseVariable(text,start){
+  let len=text.length;
+  let w="";
+  while(start<len){
+    let c=text.codePointAt(start);
+    if(c===95 || c>=48 && c<=57 || c>=97 && c<=122){
+      w+=text.charAt(start);
+    }else{
+      break;
+    }
+    start++;
+  }
+  return w;
+}`;
 
   for(let i=0;i<scope.interpolates.length;i++){
     newCode+=`replaceInterpolate(${i},"${scope.interpolates[i]}");`;
@@ -119,11 +159,12 @@ export function parseNode(code,node,scope,forceTemplateRendering){
       goOn=false;
     }else if(name in SpecialTags){
       let st=SpecialTags[name];
-      if(st.templateName && !forceTemplateRendering){
-        scope.templates[st.templateName]=tag;
+      let tagCode=code.substring(tag.from,tag.to);
+      if(st.isTemplate && !forceTemplateRendering){
+        let name=st.createFromHtml(tag,tagCode,scope,true);
+        scope.templates[name]=tag;
         goOn=false;
       }else{
-        let tagCode=code.substring(tag.from,tag.to);
         pushLayerToScope(scope, {});
         extraLayerPushed=true;
         let {open,close}=st.createFromHtml(tag,tagCode,scope);
@@ -304,6 +345,5 @@ function getAttributes(elementNode,src){
     
     node=node.nextSibling;
   }
-  console.log("attrs",attrs);
   return attrs;
 }

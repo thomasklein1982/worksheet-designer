@@ -55,6 +55,7 @@ export default class Arbeitsblatt{
     this.js="";
     this.css="";
   }
+  
   getFullHtmlCode(production){
     let code="";
     if(production){

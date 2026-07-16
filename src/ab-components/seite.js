@@ -1,5 +1,5 @@
 import { setInScope, getPropsPT, parseNode } from "./createHtmlCode";
-import kopfzeile from "./kopfzeile";
+import kopfzeile from "./kopfzeile-alt";
 
 export default{
   props: {
@@ -8,20 +8,66 @@ export default{
   create(pt,scope){
     scope.variables.seite++;
     scope.endVariables.seiten++;
-    let open=`<div class='papier'><div class="seite">`;
-    let tag=scope.templates.kopfzeile;
-    if(tag){
-      let code=parseNode(scope.code,tag,scope,true);
-      open+=code;
+    let templates=["links","mitte","rechts"];
+    let open=`<div class='papier'><div class="seite"><div class="kopfzeile">`;
+    let tag;
+    for(let i=0; i<templates.length;i++){
+      tag=scope.templates["kopfzeile-"+templates[i]];
+      if(tag){
+        let code=parseNode(scope.code,tag,scope,true);
+        open+=code;
+      }
     }
+    open+=`</div>`;
+    // let tag=scope.templates.kopfzeile;
+    // if(tag){
+    //   let code=parseNode(scope.code,tag,scope,true);
+    //   open+=code;
+    // }
     open+=`<div class="seiteninhalt">`;
     let close=`</div>`;
-    tag=scope.templates.fusszeile;
-    if(tag){
-      let code=parseNode(scope.code,tag,scope,true);
-      close+=code;
+    // let flinks=scope.templates["fusszeile-links"];
+    // let fmitte=scope.templates["fusszeile-mitte"];
+    // let frechts=scope.templates["fusszeile-rechts"];
+    // let zeile="";
+    // if(flinks){
+    //   if(fmitte){
+    //     if(frechts){
+    //       zeile="lmr";
+    //     }else{
+    //       zeile="lm";
+    //     }
+    //   }else{
+    //     if(frechts){
+    //       zeile="lr";
+    //     }else{
+    //       zeile="l";
+    //     }
+    //   }
+    // }else{
+    //   if(fmitte){
+    //     if(frechts){
+    //       zeile="mr";
+    //     }else{
+    //       zeile="m";
+    //     }
+    //   }else{
+    //     if(frechts){
+    //       zeile="r";
+    //     }else{
+    //       zeile="none";
+    //     }
+    //   }
+    // }
+    close+=`<div class="fusszeile">`;
+    for(let i=0; i<templates.length;i++){
+      tag=scope.templates["fusszeile-"+templates[i]];
+      if(tag){
+        let code=parseNode(scope.code,tag,scope,true);
+        close+=code;
+      }
     }
-    close+=`</div></div>`;
+    close+=`</div></div></div>`;
     return {
       open, close
     };

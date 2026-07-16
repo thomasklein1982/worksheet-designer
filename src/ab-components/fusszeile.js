@@ -2,16 +2,30 @@ import { getPropsPT } from "./createHtmlCode";
 
 export default {
   props: {
-    
+    links: {
+      type: Boolean,
+      default: false
+    },
+    rechts: {
+      type: Boolean,
+      default: false
+    },
   },
-  templateName: "fusszeile",
-  create(pt,scope){
-    let open=`<div class="fusszeile" ${pt}>`;
+  isTemplate: true,
+  create(links,  rechts, pt,scope, getAsTemplate){
+    let pos="mitte";
+    if(links) pos="links";
+    if(rechts) pos="rechts";
+    let name="fusszeile-"+pos;
+    if(getAsTemplate){
+      return name;
+    }
+    let open=`<div class="fusszeile-${pos}" ${pt}>`;
     let close=`</div>`;
     return {open,close};
   },
-  createFromHtml(node,nodeCode,scope){
+  createFromHtml(node,nodeCode,scope,getAsTemplate){
     let {props,pt}=getPropsPT(node,nodeCode,this.props);
-    return this.create(pt,scope);
+    return this.create(props.links,props.rechts,pt,scope,getAsTemplate);
   }
 }
