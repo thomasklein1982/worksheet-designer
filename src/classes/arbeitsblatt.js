@@ -6,26 +6,30 @@ export default class Arbeitsblatt{
     this.assets={};
     this.html=`<style>
   .seiteninhalt{
-    margin: 1cm 2cm 1cm 2cm;
+    margin: 1cm 2cm;
   }
   .kopfzeile{
     background-color: lightgrey;
-    padding-left: 1cm;
-    padding-right: 1cm;
+    padding: 0cm 1cm;
   }
   .fusszeile{
     padding-bottom: 1cm;
   }
 </style>
 
-<fusszeile>Seite {{#seite}} von {{#seiten}}</fusszeile>
+<fusszeile>Seite {{#seite}} von {{##seite}}</fusszeile>
 
 <kopfzeile links>Mathematik 7a</kopfzeile>
 <kopfzeile><h2>Wiederholung Bruchrechnung</h1></kopfzeile>
 <kopfzeile rechts>Frau Klein</kopfzeile>
 
 <seite>
+  Gesamtpunkte: {{##punkte}}
+
+  <abstand y=1cm></abstand>
+  
   <aufgabe>
+    <punkte>4</punkte>
     Berechne.
     <abc zeilen=1 spalten=2>
       <formel>\\frac12-0{,}45</formel>
@@ -33,24 +37,16 @@ export default class Arbeitsblatt{
     </abc>
     <bild datei="streckenplan" breite="4cm"/>
   </aufgabe>
-  <grafik min-x=0 max-x=10 min-y=0 max-y=10>
-    <kreis x=0 y=0 r=4 />
-  </grafik>
-</seite>
-
-<seite>
   <aufgabe>
-    Berechne.
-    <abc zeilen="1" spalten="2">
-      <formel>\\frac12-0{,}45</formel>
-      <formel>7:4</formel>
-    </abc>
-    <bild datei="streckenplan" breite="4cm"/>
+    <punkte>3</punkte>Bestimme näherungsweise den Flächeninhalt des blauen Kreises.
+    <abstand y=0.2cm></abstand>
+    <grafik min-x=0 max-x=6 min-y=0 max-y=6>
+      <karopapier/>
+      <kreis x=3 y=3 r=2 fill=rgba(0,0,255,0.5) />
+    </grafik>
   </aufgabe>
-  <grafik min-x=0 max-x=10 min-y=0 max-y=10>
-    <kreis x=0 y=0 r=4 />
-  </grafik>
 </seite>`;
+
     this.realHtml=this.html;
     this.js="";
     this.css="";
