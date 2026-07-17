@@ -24,9 +24,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: 'info-trainer',
-        short_name: 'info-trainer',
-        description: 'Lerne Informatik und das Programmieren mit Java.',
+        name: 'worksheet-designer',
+        short_name: 'worksheet-designer',
+        description: 'Erstelle Arbeitsblätter und Klausuren mit einer Erweiterung von HTML und CSS.',
         theme_color: '#121212',
         display: 'standalone',
         icons: [

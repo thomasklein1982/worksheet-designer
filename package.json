@@ -1,7 +1,7 @@
 {
   "name": "worksheet-designer",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.11",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "codemirror": "^6.0.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
@@ -23,6 +24,8 @@
     "vite": "^8.1.1"
   },
   "allowScripts": {
-    "vue-demi@0.14.10": true
+    "vue-demi@0.14.10": true,
+    "sharp@0.33.5": true,
+    "core-js@3.49.0": true
   }
 }

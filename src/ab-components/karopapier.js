@@ -23,8 +23,8 @@ export default {
     let open="<g class='karopapier' "+pt+" >";
     if(sx===undefined){
       let g=getFromScope(scope,"grafik");
-      sx=Math.floor(g.minX*2)/2;
-      sy=Math.floor(g.minY*2)/2;
+      sx=Math.floor((g.minX-g.rahmen)*2)/2;
+      sy=Math.floor((g.minY-g.rahmen)*2)/2;
       b=Math.ceil(g.width);
       h=Math.ceil(g.height);
     }

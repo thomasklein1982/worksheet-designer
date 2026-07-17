@@ -1,6 +1,21 @@
 import { createApp, defineCustomElement } from 'vue'
 import './style.css';
 import App from './App.vue';
+import { registerSW } from 'virtual:pwa-register';
+
+const updateSW=registerSW({
+  onNeedRefresh(){
+    let a=confirm("Eine neue Version ist verfügbar. Willst du aktualisieren (empfohlen!)?");
+    if(a){
+      updateSW();
+    }
+  },
+  onOfflineReady(){
+    console.log("offline ready");
+  }
+});
+export const updateServiceWorker=updateSW;
+
 const app = createApp(App);
 app.mount('#app');
 

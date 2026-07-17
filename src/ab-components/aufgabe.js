@@ -14,7 +14,7 @@ export default {
   create(titel,name,pt,scope){
     let open=`<div class="aufgabe" ${pt}>`;
     scope.variables.aufgabe++;
-    scope.endVariables.aufgaben++;
+    scope.endVariables.aufgabe++;
     open+=`<span class="aufgabennummer">${scope.variables.aufgabe}</span>`;
     if(titel!==null){
       open+=`<span class="aufgabentitel">${titel}</span><div></div>`;

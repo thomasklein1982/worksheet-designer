@@ -9,6 +9,7 @@
     <button @click="$emit('export')" :disabled="!isABOpen">Exportieren</button>
     <button @click="$emit('assets')" :disabled="!isABOpen">Assets</button>
     <button @click="$root.settings">Einstellungen</button>
+    {{ $root.version }}
   </div>
 </template>
 

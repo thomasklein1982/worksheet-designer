@@ -6,7 +6,7 @@ export default {
   },
   create(anzahl,pt,scope){
     scope.variables.punkte+=anzahl;
-    scope.endVariables.gesamtpunkte+=anzahl;
+    scope.endVariables.punkte+=anzahl;
     let open=`<span class="punkte">`;
     let close="</span>";
     return {open,close};

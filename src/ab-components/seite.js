@@ -7,7 +7,7 @@ export default{
   },
   create(pt,scope){
     scope.variables.seite++;
-    scope.endVariables.seiten++;
+    scope.endVariables.seite++;
     let templates=["links","mitte","rechts"];
     let open=`<div class='papier'><div class="seite"><div class="kopfzeile">`;
     let tag;

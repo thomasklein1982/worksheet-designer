@@ -8,6 +8,7 @@ import Arbeitsblatt from './classes/arbeitsblatt.js';
 import Editor from './components/editor.vue';
 import { download, upload } from './functions/helper.js';
 import html2canvas from 'html2canvas';
+import {version} from "../package.json";
 
 export default{
   components: {
@@ -21,7 +22,8 @@ export default{
   data(){
     return {
       abs: [],
-      cmInPx: 1
+      cmInPx: 1,
+      version: version
     }
   },
   mounted(){

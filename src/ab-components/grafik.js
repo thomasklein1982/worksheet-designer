@@ -30,16 +30,20 @@ export default{
     "zoom-y": {
       type: Number,
       default: 1
+    },
+    "rahmen": {
+      type: Number,
+      default: 0
     }
   },
-  create(minX,maxX,minY,maxY,style,zoomX,zoomY,pt,scope){
-    let sizeX=maxX-minX;
-    let sizeY=maxY-minY;
+  create(minX,maxX,minY,maxY,style,zoomX,zoomY,rahmen,pt,scope){
+    let sizeX=maxX-minX+2*rahmen;
+    let sizeY=maxY-minY+2*rahmen;
     let width=sizeX*zoomX;
     let height=sizeY*zoomY;
     let viewBox="0 0 "+width+" "+height;
-    let transformation="matrix("+(1)+",0,0,"+(-1)+","+(-minX)+","+(maxY)+")";
-    let code=`<div style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${style}" ${pt}>
+    let transformation="matrix("+(1)+",0,0,"+(-1)+","+(-minX+rahmen)+","+(maxY+rahmen)+")";
+    let code=`<div class="grafik" style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${style}" ${pt}>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
   <defs>
     <filter x="0" y="0" width="1" height="1" id="white0.5">
@@ -53,7 +57,7 @@ export default{
   <g transform="${transformation}" style="stroke: black; fill: none; stroke-width: 0.06">
     `;
     setInScope(scope,"grafik",{
-      minX,maxX,minY,maxY,zoomX,zoomY,width,height
+      minX,maxX,minY,maxY,zoomX,zoomY,width,height,rahmen
     });
     return {
       open: code,
@@ -62,6 +66,6 @@ export default{
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props);
-    return this.create(props["min-x"],props["max-x"],props["min-y"],props["max-y"],props["style"], props["zoom-x"], props["zoom-y"], pt,scope);
+    return this.create(props["min-x"],props["max-x"],props["min-y"],props["max-y"],props["style"], props["zoom-x"], props["zoom-y"],props["rahmen"], pt,scope);
   }
 }

@@ -10,11 +10,12 @@ import karopapier from "./karopapier";
 import kopfzeile from "./kopfzeile";
 import kreis from "./kreis";
 import ksystem from "./ksystem";
+import punkt from "./punkt";
 import punkte from "./punkte";
 import seite from "./seite";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt
 };
 
 export default function createHtmlCode(ab,code,tree){
@@ -29,9 +30,9 @@ export default function createHtmlCode(ab,code,tree){
       punkte: 0
     },
     endVariables: {
-      seiten: 0,
-      aufgaben: 0,
-      gesamtpunkte: 0
+      aufgabe: 0,
+      seite: 0,
+      punkte: 0
     },
     templates: {
       "kopfzeile-links": null,
@@ -54,9 +55,9 @@ export default function createHtmlCode(ab,code,tree){
   newCode+=`<script>
   let scope={
     variables: {
-      seiten: ${scope.endVariables.seiten},
-      aufgaben: ${scope.endVariables.aufgaben},
-      gesamtpunkte: ${scope.endVariables.gesamtpunkte},
+      seite: ${scope.endVariables.seite},
+      aufgabe: ${scope.endVariables.aufgabe},
+      punkte: ${scope.endVariables.punkte},
     }
   }
   let macros={
@@ -79,7 +80,7 @@ export default function createHtmlCode(ab,code,tree){
       code=replaceScopeVariables(code,scope);
       eval("window.value="+code);
     }catch(e){
-      window.value="Interpolationsfehler "+code+": "+e;
+      window.value="Interpolationsfehler "+code;
     }
     let el=document.getElementById("interpolate-"+index);
     el.innerHTML=window.value;
@@ -94,13 +95,24 @@ function replaceScopeVariables(text,scope){
     let pos=text.indexOf("#",start);
     if(pos<0) break;
     newText+=text.substring(start,pos);
+    let variables;
+    if(text.charAt(pos+1)==="#"){
+      variables=scope.endVariables;
+      pos++;
+    }else{
+      variables=scope.variables;
+    }
     start=pos+1;
     let w=parseVariable(text,start);
     start+=w.length;
     if(!w) continue;
-    if(w in scope.variables){
-      newText+=scope.variables[w];
-    }else if(w in scope.endVariables){
+    if(w in variables){
+      if(variables===scope.variables){
+        newText+=scope.variables[w];
+      }else{
+        newText+="#"+w;
+      }
+    }else{
       newText+="#"+w;
     }
   }
@@ -264,13 +276,24 @@ function replaceScopeVariables(text,scope){
     let pos=text.indexOf("#",start);
     if(pos<0) break;
     newText+=text.substring(start,pos);
+    let variables;
+    if(text.charAt(pos+1)==="#"){
+      variables=scope.endVariables;
+      pos++;
+    }else{
+      variables=scope.variables;
+    }
     start=pos+1;
     let w=parseVariable(text,start);
     start+=w.length;
     if(!w) continue;
-    if(w in scope.variables){
-      newText+=scope.variables[w];
-    }else if(w in scope.endVariables){
+    if(w in variables){
+      if(variables===scope.variables){
+        newText+=scope.variables[w];
+      }else{
+        newText+="#"+w;
+      }
+    }else{
       newText+="#"+w;
     }
   }

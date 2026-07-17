@@ -41,6 +41,11 @@ export default {
     let ex=x+max*dx;
     let ey=y+max*dy;
     let open=`<g ${pt}><line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}"></line>`;
+    // let start=Math.ceil(min*schritt)/schritt;
+    // let end=Math.floor(max*schritt)/schritt;
+    // while(start<=end){
+    //   start++;
+    // }
     let close="</g>";
     return {open,close};
   },
