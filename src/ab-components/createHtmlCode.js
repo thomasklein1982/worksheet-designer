@@ -6,20 +6,32 @@ import bild from "./bild";
 import box from "./box";
 import fusszeile from "./fusszeile";
 import grafik from "./grafik";
+import ifelse from "./ifelse";
 import karopapier from "./karopapier";
 import kopfzeile from "./kopfzeile";
 import kreis from "./kreis";
 import ksystem from "./ksystem";
+import loop from "./loop";
 import punkt from "./punkt";
 import punkte from "./punkte";
 import seite from "./seite";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse
 };
+let IgnoreTags={
+  "elseif": true, "else": true
+}
 
 export default function createHtmlCode(ab,code,tree){
-  let newCode="";
+  let newCode=`<script>
+  window.scope={
+    variables: {
+    }
+  };
+  window.$=window.scope.variables;
+  </script>
+  `;
   let scope={
     layers: [],
     interpolates: [],
@@ -44,22 +56,20 @@ export default function createHtmlCode(ab,code,tree){
     },
     code
   };
+  window.$=scope.variables;
   try{
     let node=tree.topNode;
-    newCode=parseNode(code,node,scope);
+    newCode+=parseNode(code,node,scope);
   }catch(e){
     console.log(e);
     newCode=code;
   }
   // console.log(newCode);
-  newCode+=`<script>
-  let scope={
-    variables: {
-      seite: ${scope.endVariables.seite},
-      aufgabe: ${scope.endVariables.aufgabe},
-      punkte: ${scope.endVariables.punkte},
-    }
-  }
+  newCode+=`
+  <script>
+  scope.variables.seite=${scope.endVariables.seite};
+  scope.variables.aufgabe=${scope.endVariables.aufgabe};
+  scope.variables.punkte=${scope.endVariables.punkte};
   let macros={
     
   };
@@ -83,6 +93,7 @@ export default function createHtmlCode(ab,code,tree){
       window.value="Interpolationsfehler "+code;
     }
     let el=document.getElementById("interpolate-"+index);
+    if(!el) return;
     el.innerHTML=window.value;
   }`;
   //muss angepasst werden mit Funktionen unten:
@@ -152,6 +163,9 @@ function parseVariable(text,start){
 
 export function parseNode(code,node,scope,forceTemplateRendering){
   let newCode="";
+  if(!node){
+    return newCode;
+  }
   if(node.name==="Element"){
     let tag=node;
     let openTag=tag.firstChild;
@@ -171,22 +185,32 @@ export function parseNode(code,node,scope,forceTemplateRendering){
     let extraLayerPushed=false;
     if(name==="script" || name==="style"){
       let tagCode=code.substring(tag.from,tag.to);
-      newCode+=tagCode;
       goOn=false;
+      if(name==="script"){
+        let s=node.firstChild.nextSibling;
+        let c=code.substring(s.from,s.to);
+        console.log("script",c);
+        c="let scope=window.scope; let $=window.$;\n"+c;
+        eval(c);
+        tagCode="<script>\n"+c+"\n</script>";
+      }
+      newCode+=tagCode;
     }else if(name in SpecialTags){
       let st=SpecialTags[name];
       let tagCode=code.substring(tag.from,tag.to);
       if(st.isTemplate && !forceTemplateRendering){
-        let name=st.createFromHtml(tag,tagCode,scope,true);
+        let name=st.createFromHtml(tag,code,scope,true);
         scope.templates[name]=tag;
         goOn=false;
       }else{
         pushLayerToScope(scope, {});
         extraLayerPushed=true;
-        let {open,close}=st.createFromHtml(tag,tagCode,scope);
+        let {open,close}=st.createFromHtml(tag,code,scope);
         openTagCode=open;
         closeTagCode=close;
       }
+    }else if(name in IgnoreTags){
+      return "";
     }else{
       openTagCode=code.substring(openTag.from,openTag.to);
       if(closeTag){
@@ -194,13 +218,65 @@ export function parseNode(code,node,scope,forceTemplateRendering){
       }
     }
     if(goOn){
-      newCode+=openTagCode;
-      let child=openTag.nextSibling;
-      while(child && child!==closeTag){
-        newCode+=parseNode(code,child,scope);
-        child=child.nextSibling;
+      if(openTagCode.loop){
+        let index=openTagCode.index;
+        let value=openTagCode.value;
+        let src=openTagCode.src;
+        if(Array.isArray(src)){
+          for(let i=0;i<src.length;i++){
+            let a=src[i];
+            scope.variables[value]=a;
+            window[value]=a;
+            if(index!==undefined){
+              window[index]=i;
+              scope.variables[index]=window[index];
+            }
+            let child=openTag.nextSibling;
+            while(child && child!==closeTag){
+              newCode+=parseNode(code,child,scope);
+              child=child.nextSibling;
+            }
+          }
+        }else if(typeof src === "number"){
+          for(let i=1;i<=src;i++){
+            let a=i;
+            scope.variables[value]=a;
+            window[value]=a;
+            if(index!==undefined){
+              window[index]=i-1;
+              scope.variables[index]=window[index];
+            }
+            let child=openTag.nextSibling;
+            while(child && child!==closeTag){
+              newCode+=parseNode(code,child,scope);
+              child=child.nextSibling;
+            }
+          }
+        }
+      }else if(openTagCode.ifelse){
+        for(let i=0;i<openTagCode.ifs.length;i++){
+          let data=openTagCode.ifs[i];
+          let res=runCodeWithScope(data.cond);
+          if(res){
+            let n=getFirstHtmlChild(data.node);
+            if(n) newCode+=parseNode(code,n,scope);
+            return newCode;
+          }
+        }
+        if(openTagCode.else){
+          let n=getFirstHtmlChild(openTagCode.else.node);
+          if(n) newCode+=parseNode(code,n,scope);
+          return newCode;
+        }
+      }else{
+        newCode+=openTagCode;
+        let child=openTag.nextSibling;
+        while(child && child!==closeTag){
+          newCode+=parseNode(code,child,scope);
+          child=child.nextSibling;
+        }
+        newCode+=closeTagCode;
       }
-      newCode+=closeTagCode;
       if(extraLayerPushed) popLayerFromScope(scope);
     }
   }else if(node.name==="Text"){
@@ -215,6 +291,17 @@ export function parseNode(code,node,scope,forceTemplateRendering){
     
   }
   return newCode;
+}
+
+export function getFirstHtmlChild(node,code){
+  let open=node.firstChild;
+  if(!open) return null;
+  let content=open.nextSibling;
+  return content;
+}
+
+export function runCodeWithScope(code){
+  return eval("let scope=window.scope; let $=window.$;\n"+code+";");
 }
 
 export function pushLayerToScope(scope, layer){
@@ -242,7 +329,7 @@ export function getFromScope(scope,key){
   return undefined;
 }
 
-function interpolateText(text,scope){
+export function interpolateText(text,scope){
   let open="{{";
   let close="}}";
   let start=-1;
@@ -258,9 +345,28 @@ function interpolateText(text,scope){
     let it=text.substring(start+2,end);
     newText+=text.substring(index,start);
     if(it){
-      newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
+
+      // let parts=it.split(".");
+      // if(parts[0] in scope.variables){
+      //   let val=scope.variables[parts[0]];
+      //   for(let i=1;i<parts.length;i++){
+      //     let p=parts[i];
+      //     val=val[p];
+      //   }
+      //   newText+=JSON.stringify(val);
+      // }else{
+      //   newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
+      // }
       it=replaceScopeVariables(it,scope);
-      scope.interpolates.push(it);
+      // scope.interpolates.push(it);
+      try{
+        let val=runCodeWithScope(it);
+        newText+=JSON.stringify(val);
+      }catch(e){
+        newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
+        //newText+=it;
+        scope.interpolates.push(it);
+      }
     }
     index=end+2;
   }
@@ -320,12 +426,12 @@ const scale=1;
 
 
 
-export function getPropsPT(elementNode,elementCode,props){
+export function getPropsPT(elementNode,code,props,scope){
   let res={
     props: {},
     pt: ""
   };
-  let attrs=getAttributes(elementNode,elementCode);
+  let attrs=getAttributes(elementNode,code,scope);
   for(let a in props){
     let p=props[a];
     let v=attrs[a];
@@ -352,9 +458,9 @@ export function getPropsPT(elementNode,elementCode,props){
   return res;
 }
 
-function getAttributes(elementNode,src){
+function getAttributes(elementNode,src,scope){
   let attrs={};
-  let offset=elementNode.from;
+  let offset=0;//elementNode.from;
   let node=elementNode.firstChild.firstChild.nextSibling.nextSibling;
   while(node.name==="Attribute"){
     let name, value;
@@ -369,6 +475,9 @@ function getAttributes(elementNode,src){
         value=src.substring(n.from-offset,n.to-offset);
       }else if(n.name==="AttributeValue"){
         value=src.substring(n.from+1-offset,n.to-1-offset);
+      }
+      if(value){
+        value=interpolateText(value,scope);
       }
     }
     attrs[name]=value;

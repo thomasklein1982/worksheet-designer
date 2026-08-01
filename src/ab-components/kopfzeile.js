@@ -25,7 +25,7 @@ export default {
     return {open,close};
   },
   createFromHtml(node,nodeCode,scope,getAsTemplate){
-    let {props,pt}=getPropsPT(node,nodeCode,this.props);
+    let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
     return this.create(props.links,props.rechts,pt,scope,getAsTemplate);
   }
 }

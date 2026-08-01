@@ -23,6 +23,24 @@ export default class Arbeitsblatt{
 <kopfzeile><h2>Wiederholung Bruchrechnung</h1></kopfzeile>
 <kopfzeile rechts>Frau Klein</kopfzeile>
 
+<script>
+  $.a=7
+  $.werte=["Test","Bla","Blup","Grrr"]
+</script>
+
+<loop for="(a,i) in werte">
+  {{i}}. {{a}}
+  <if cond="i===1">
+    i ist 1
+  </if>
+  <elseif cond="i===0">
+    i ist 0
+  </elseif>
+  <else>
+    i ist etwas anderes
+  </else>
+</loop>
+
 <seite>
   Gesamtpunkte: {{##punkte}}
 
@@ -63,6 +81,7 @@ export default class Arbeitsblatt{
     return `<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8"></meta>
     ${window.additionalCode}
     <style>
       

@@ -11,9 +11,9 @@ export default {
     let close="</span>";
     return {open,close};
   },
-  createFromHtml(node,nodeCode,scope){
-    let {props,pt}=getPropsPT(node,nodeCode,this.props);
-    console.log(node.nextSibling.toString());
+  createFromHtml(node,code,scope){
+    let {props,pt}=getPropsPT(node,code,this.props,scope);
+    let nodeCode=code.substring(node.from,node.to);
     let from=nodeCode.indexOf(">");
     let to=nodeCode.lastIndexOf("<");
     

@@ -65,7 +65,7 @@ export default{
     };
   },
   createFromHtml(node,nodeCode,scope){
-    let {props,pt}=getPropsPT(node,nodeCode,this.props);
+    let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
     return this.create(props["min-x"],props["max-x"],props["min-y"],props["max-y"],props["style"], props["zoom-x"], props["zoom-y"],props["rahmen"], pt,scope);
   }
 }

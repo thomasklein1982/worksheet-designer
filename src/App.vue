@@ -9,6 +9,7 @@ import Editor from './components/editor.vue';
 import { download, upload } from './functions/helper.js';
 import html2canvas from 'html2canvas';
 import {version} from "../package.json";
+import sleep from './functions/sleep.js';
 
 export default{
   components: {
@@ -73,34 +74,21 @@ export default{
       const pdf = new jsPDF("portrait", "mm", "a4");
       let pdfHeight=pdf.internal.pageSize.height;
       let pdfWidth=pdf.internal.pageSize.width;
-      for(let j=1;j<seiten.length;j++){
-          let seite=seiten[j];
-          seite.style.display="none";
-      }
       for(let i=0;i<seiten.length;i++){
-        if(i>0) pdf.addPage();
-        for(let j=0;j<i;j++){
-          let seite=seiten[j];
-          seite.style.display="none";
+        if(i>0){
+          pdf.addPage();
         }
-        seiten[i].style.display="";
-        
         let seite=seiten[i];
-        const canvas = await html2canvas(seite, {
+        let canvas = await html2canvas(seite, {
           scale: 2, // 2x resolution for sharper output
           useCORS: true, // Enable cross-origin images
           logging: false,
           backgroundColor: "#ffffff",
         });
         
-        const imgData = canvas.toDataURL("image/png");
+        let imgData = canvas.toDataURL("image/png");
 
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, 'someAlias', 'FAST');
-      }
-      //doc.html(code,0,0);
-      for(let j=0;j<seiten.length;j++){
-          let seite=seiten[j];
-          seite.style.display="";
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, null, 'FAST');
       }
       pdf.save(ab.name+".pdf");
     },
