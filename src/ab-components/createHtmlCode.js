@@ -25,6 +25,9 @@ let IgnoreTags={
 }
 
 export default function createHtmlCode(ab,code,tree){
+  app.setupData.width=21;
+  app.setupData.height=29.7;
+  
   let newCode=`<script>
   window.scope={
     variables: {
