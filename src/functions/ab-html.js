@@ -17,7 +17,8 @@ const abHtml=html({
     },
     "aufgabe": {
       attrs: {
-        "titel": null
+        "titel": null,
+        punkte: null
       },
       globalAttrs: false,
       children: textTags
@@ -56,7 +57,39 @@ const abHtml=html({
       },
       globalAttrs: false,
       children: graphicTags
-    }
+    },
+    setup: {
+      attrs: {
+        papier: ["21x29.7","29.7x21","14.8x21","21x14.8"],
+        punkte: ["(# P)","#P"],
+        aufgabe: ["#aufgabe","A#aufgabe","#aufgabe."]
+      },
+      globalAttrs: false,
+      children: null
+    },
+    bild: {
+      attrs: {
+        datei: null,
+        breite: ["3cm"],
+        hoehe: ["3cm"],
+        links: ["0cm"],
+        rechts: ["0cm"],
+        oben: ["0cm"],
+        unten: ["0cm"],
+      },
+      globalAttrs: false,
+      children: null
+    },
+    box: {
+      attrs: {
+        links: ["0cm"],
+        rechts: ["0cm"],
+        oben: ["0cm"],
+        unten: ["0cm"],
+      },
+      globalAttrs: false,
+      children: textTags.concat(["aufgabe","material"])
+    },
   }
 });
 

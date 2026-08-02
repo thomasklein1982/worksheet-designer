@@ -37,6 +37,7 @@ export default{
     rename(){
       let a=prompt("Neuen Name eingeben:",this.asset.name);
       if(!a) return;
+      
       this.asset.name=a;
     }
   }

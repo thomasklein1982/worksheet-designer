@@ -68,6 +68,7 @@ html,body{
   margin: 0;
   padding: 0;
   position: relative;
+  overflow: hidden;
 }
 
 @media screen{
@@ -126,13 +127,19 @@ html,body{
 
 .aufgabennummer{
   /* border: 1pt solid black; */
-  border-radius: 0.2rem;
   position: absolute;
-  transform: translate(-120%,-0.2rem);
+  transform: translate(-120%,0rem);
   min-width: 2em;
-  padding: 0.2rem;
   font-weight: bold;
   text-align: center;
+}
+
+.aufgabentitel{
+  font-weight: bold;
+}
+
+.aufgabe{
+  position: relative;
 }
 
 .punkte{
@@ -144,14 +151,3 @@ html,body{
   text-align: center;
 }
 
-.punkte::before{
-  content: "(";
-}
-
-.punkte::after{
-  content: " P)";
-}
-
-.aufgabennummer::before{
-  content: "A"
-}

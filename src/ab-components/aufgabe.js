@@ -1,4 +1,5 @@
-import { getFromScope, setInScope, getPropsPT } from "./createHtmlCode"
+import { getFromScope, setInScope, getPropsPT, interpolateText, replaceScopeVariables } from "./createHtmlCode"
+import punkte from "./punkte";
 
 export default {
   props: {
@@ -9,17 +10,27 @@ export default {
     name: {
       type: String,
       default: null
-    }
+    },
+    punkte: String
   },
-  create(titel,name,pt,scope){
+  create(titel,name,anzahlPunkte,pt,scope){
     let open=`<div class="aufgabe" ${pt}>`;
     scope.variables.aufgabe++;
     scope.endVariables.aufgabe++;
-    open+=`<span class="aufgabennummer">${scope.variables.aufgabe}</span>`;
+    let text=scope.setup.aufgabe;
+    if(!text) text="#aufgabe";
+    text=replaceScopeVariables(text,scope);
+    text=interpolateText(text,scope);
+    open+=`<span class="aufgabennummer">${text}</span>`;
+    let close="";
+    if(anzahlPunkte!==undefined){
+      let p=punkte.create(anzahlPunkte,"",scope);
+      open+=p.open+anzahlPunkte+p.close;
+    }
     if(titel!==null){
       open+=`<span class="aufgabentitel">${titel}</span><div></div>`;
     }
-    let close=`</div>`;
+    close+=`</div>`;
     setInScope(scope,"aufgabe",{
       titel, name
     });
@@ -27,6 +38,6 @@ export default {
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props.titel,props.name,pt,scope);
+    return this.create(props.titel,props.name,props.punkte,pt,scope);
   }
 }

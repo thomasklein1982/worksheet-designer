@@ -15,9 +15,10 @@ import loop from "./loop";
 import punkt from "./punkt";
 import punkte from "./punkte";
 import seite from "./seite";
+import setup from "./setup";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup
 };
 let IgnoreTags={
   "elseif": true, "else": true
@@ -54,6 +55,9 @@ export default function createHtmlCode(ab,code,tree){
       "fusszeile-rechts": null,
       "fusszeile-mitte": null,
     },
+    setup: {
+      aufgabe: null
+    },
     code
   };
   window.$=scope.variables;
@@ -64,7 +68,6 @@ export default function createHtmlCode(ab,code,tree){
     console.log(e);
     newCode=code;
   }
-  // console.log(newCode);
   newCode+=`
   <script>
   scope.variables.seite=${scope.endVariables.seite};
@@ -96,7 +99,7 @@ export default function createHtmlCode(ab,code,tree){
     if(!el) return;
     el.innerHTML=window.value;
   }`;
-  //muss angepasst werden mit Funktionen unten:
+  /*muss angepasst werden mit Funktionen unten:*/
   newCode+=`
 function replaceScopeVariables(text,scope){
   let newText="";
@@ -217,6 +220,7 @@ export function parseNode(code,node,scope,forceTemplateRendering){
         closeTagCode=code.substring(closeTag.from,closeTag.to);
       }
     }
+    if(!openTagCode) goOn=false;
     if(goOn){
       if(openTagCode.loop){
         let index=openTagCode.index;
@@ -226,10 +230,10 @@ export function parseNode(code,node,scope,forceTemplateRendering){
           for(let i=0;i<src.length;i++){
             let a=src[i];
             scope.variables[value]=a;
-            window[value]=a;
+            //window[value]=a;
             if(index!==undefined){
-              window[index]=i;
-              scope.variables[index]=window[index];
+              //window[index]=i;
+              scope.variables[index]=i;
             }
             let child=openTag.nextSibling;
             while(child && child!==closeTag){
@@ -241,10 +245,10 @@ export function parseNode(code,node,scope,forceTemplateRendering){
           for(let i=1;i<=src;i++){
             let a=i;
             scope.variables[value]=a;
-            window[value]=a;
+            //window[value]=a;
             if(index!==undefined){
-              window[index]=i-1;
-              scope.variables[index]=window[index];
+              //window[index]=i-1;
+              scope.variables[index]=i-1;
             }
             let child=openTag.nextSibling;
             while(child && child!==closeTag){
@@ -268,6 +272,8 @@ export function parseNode(code,node,scope,forceTemplateRendering){
           if(n) newCode+=parseNode(code,n,scope);
           return newCode;
         }
+      }else if(openTagCode.setup){
+        
       }else{
         newCode+=openTagCode;
         let child=openTag.nextSibling;
@@ -345,26 +351,12 @@ export function interpolateText(text,scope){
     let it=text.substring(start+2,end);
     newText+=text.substring(index,start);
     if(it){
-
-      // let parts=it.split(".");
-      // if(parts[0] in scope.variables){
-      //   let val=scope.variables[parts[0]];
-      //   for(let i=1;i<parts.length;i++){
-      //     let p=parts[i];
-      //     val=val[p];
-      //   }
-      //   newText+=JSON.stringify(val);
-      // }else{
-      //   newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
-      // }
       it=replaceScopeVariables(it,scope);
-      // scope.interpolates.push(it);
       try{
         let val=runCodeWithScope(it);
         newText+=JSON.stringify(val);
       }catch(e){
         newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
-        //newText+=it;
         scope.interpolates.push(it);
       }
     }
@@ -374,7 +366,7 @@ export function interpolateText(text,scope){
   return newText;
 }
 
-function replaceScopeVariables(text,scope){
+export function replaceScopeVariables(text,scope){
   let newText="";
   const len=text.length;
   let start=0;
@@ -460,7 +452,7 @@ export function getPropsPT(elementNode,code,props,scope){
 
 function getAttributes(elementNode,src,scope){
   let attrs={};
-  let offset=0;//elementNode.from;
+  let offset=0;
   let node=elementNode.firstChild.firstChild.nextSibling.nextSibling;
   while(node.name==="Attribute"){
     let name, value;

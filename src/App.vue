@@ -24,7 +24,11 @@ export default{
     return {
       abs: [],
       cmInPx: 1,
-      version: version
+      version: version,
+      setupData: {
+        width: 21,
+        height: 29.7
+      }
     }
   },
   mounted(){
@@ -71,7 +75,13 @@ export default{
       //const doc=new jsPDF();
       let body=this.$refs.editor.$refs.preview.iframe.contentWindow.document.body;
       let seiten=body.querySelectorAll(".papier");
-      const pdf = new jsPDF("portrait", "mm", "a4");
+      let w=app.setupData.width*10;
+      let h=app.setupData.height*10;
+      const pdf = new jsPDF({
+        orientation: w<=h? "p": "l",
+        unit: "mm",
+        format: [w,h]
+      });
       let pdfHeight=pdf.internal.pageSize.height;
       let pdfWidth=pdf.internal.pageSize.width;
       for(let i=0;i<seiten.length;i++){

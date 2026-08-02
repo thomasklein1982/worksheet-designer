@@ -17,7 +17,7 @@ const updateSW=registerSW({
 export const updateServiceWorker=updateSW;
 
 const app = createApp(App);
-app.mount('#app');
+window.app=app.mount('#app');
 
 async function fetchFiles(){
   let f;

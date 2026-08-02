@@ -1,4 +1,4 @@
-import { getFromScope, setInScope, getPropsPT } from "./createHtmlCode"
+import { getFromScope, setInScope, getPropsPT, runCodeWithScope } from "./createHtmlCode"
 
 export default {
   props: {
@@ -14,7 +14,7 @@ export default {
     let a=forv.substring(0,posIn).trim();
     let src=forv.substring(posIn+4).trim();
     if(/^\d+$/.test(src)) src=src*1;
-    else src=scope.variables[src];
+    else src=runCodeWithScope(src);
     let value,index;
     if(a.startsWith("(")){
       if(!a.endsWith(")")) throw "')' fehlt in for-Attribut";

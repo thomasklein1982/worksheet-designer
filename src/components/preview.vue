@@ -4,7 +4,7 @@
       <input type="range" v-model="scale">
     </div>
     <div id="scroll" >
-      <div ref="content"  style="transform-origin: top left; aspect-ratio: 21/29.7; border: 1pt solid black; width: 21cm; height: 100%;" :style="{transform: 'scale('+(realScale)+')', height: (100/realScale-2)+'%'}" >
+      <div ref="content"  style="transform-origin: top left; aspect-ratio: 21/29.7; border: 1pt solid black; width: 21cm;  height: 100%;" :style="{transform: 'scale('+(realScale)+')', height: (100/realScale-2)+'%', 'aspect-ratio': $root.setupData.width/$root.setupData.height, width: $root.setupData.width+1+'cm'}" >
         
       </div>
     </div>
@@ -18,7 +18,6 @@ export default{
   },
   computed: {
     realScale(){
-      console.log("realScale",this.scale,(this.scale*1+25)/125.0)
       return (this.scale*1+25)/125.0;
     }
   },

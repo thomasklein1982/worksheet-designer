@@ -3,7 +3,7 @@ import Asset from "./asset";
 export default class Arbeitsblatt{
   constructor(){
     this.name="AB";
-    this.assets={};
+    this.assets=[];
     this.html=`<style>
   .seiteninhalt{
     margin: 1cm 2cm;
@@ -16,7 +16,7 @@ export default class Arbeitsblatt{
     padding-bottom: 1cm;
   }
 </style>
-
+<setup groesse="15x8"/>
 <fusszeile>Seite {{#seite}} von {{##seite}}</fusszeile>
 
 <kopfzeile links>Mathematik 7a</kopfzeile>
@@ -28,12 +28,12 @@ export default class Arbeitsblatt{
   $.werte=["Test","Bla","Blup","Grrr"]
 </script>
 
-<loop for="(a,i) in werte">
-  {{i}}. {{a}}
-  <if cond="i===1">
+<loop for="(a,i) in $.werte">
+  {{$.i}}. {{$.a}}
+  <if cond="$.i===1">
     i ist 1
   </if>
-  <elseif cond="i===0">
+  <elseif cond="$.i===0">
     i ist 0
   </elseif>
   <else>
@@ -84,7 +84,10 @@ export default class Arbeitsblatt{
     <meta charset="UTF-8"></meta>
     ${window.additionalCode}
     <style>
-      
+      .papier{
+        width: ${app.setupData.width}cm;
+        height: ${app.setupData.height}cm;
+      }
     </style>
     
   </head>
@@ -99,16 +102,25 @@ export default class Arbeitsblatt{
       html: this.html,
       js: this.js,
       css: this.css,
-      assets: {}
+      assets: []
     };
-    for(let n in this.assets){
-      let a=this.assets[n];
-      obj.assets[a.name.toLowerCase()]=a.getSaveObject();
+    for(let i=0;i<this.assets.length;i++){
+      let a=this.assets[i];
+      obj.assets.push(a.getSaveObject());
     }
     return obj;
   }
   addAsset(a){
-    this.assets[a.name.toLowerCase()]=a;
+    this.assets.push(a);
+  }
+  getAssetByName(name){
+    for(let i=0;i<this.assets.length;i++){
+      let a=this.assets[i];
+      if(a.name===name){
+        return a;
+      }
+    }
+    return null;
   }
   static createFromSaveObject(obj){
     let a=new Arbeitsblatt();
@@ -120,9 +132,9 @@ export default class Arbeitsblatt{
     this.html=obj.html;
     this.css=obj.css;
     this.js=obj.js;
-    this.assets={};
-    for(let n in obj.assets){
-      let a=obj.assets[n];
+    this.assets=[];
+    for(let i=0;i<obj.assets.length;i++){
+      let a=obj.assets[i];
       a=Asset.createFromSaveObject(a);
       this.addAsset(a);
     }
