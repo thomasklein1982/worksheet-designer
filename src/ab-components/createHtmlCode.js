@@ -16,9 +16,10 @@ import punkt from "./punkt";
 import punkte from "./punkte";
 import seite from "./seite";
 import setup from "./setup";
+import titel from "./titel";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel
 };
 let IgnoreTags={
   "elseif": true, "else": true
@@ -27,7 +28,7 @@ let IgnoreTags={
 export default function createHtmlCode(ab,code,tree){
   app.setupData.width=21;
   app.setupData.height=29.7;
-  
+
   let newCode=`<script>
   window.scope={
     variables: {

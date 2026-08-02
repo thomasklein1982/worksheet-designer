@@ -90,6 +90,9 @@ const abHtml=html({
       globalAttrs: false,
       children: textTags.concat(["aufgabe","material"])
     },
+    titel: {
+      
+    }
   }
 });
 

@@ -89,6 +89,7 @@ html,body{
 
 .seiteninhalt{
   flex: 1;
+  margin: 1cm 2cm;
 }
 
 .kopfzeile,.fusszeile{
@@ -113,6 +114,32 @@ html,body{
   grid-column: 3;
   justify-self: rechts;
   text-align: right;
+}
+
+.kopfzeile-links{
+  padding-left: 1cm;
+  padding-top: 0.5cm
+}
+.kopfzeile-rechts{
+  padding-right: 1cm;
+  padding-top: 0.5cm
+}
+.kopfzeile-mitte{
+  padding-top: 0.5cm;
+}
+
+.fusszeile-links{
+  padding-left: 1cm;
+  padding-bottom: 0.5cm;
+}
+
+.fusszeile-rechts{
+  padding-right: 1cm;
+  padding-bottom: 0.5cm;
+}
+
+.fusszeile-mitte{
+  padding-bottom: 0.5cm;
 }
 
 /* .kopfzeile>*:nth-child(1), .fusszeile>*:nth-child(1){
@@ -140,6 +167,10 @@ html,body{
 
 .aufgabe{
   position: relative;
+}
+
+.titel{
+  text-align: center;
 }
 
 .punkte{

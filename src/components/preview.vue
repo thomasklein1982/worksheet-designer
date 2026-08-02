@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper" class="flex-container-column">
     <div id="controls" >
-      <input type="range" v-model="scale">
+      <input type="range" v-model="scale"></input>
     </div>
     <div id="scroll" >
       <div ref="content"  style="transform-origin: top left; aspect-ratio: 21/29.7; border: 1pt solid black; width: 21cm;  height: 100%;" :style="{transform: 'scale('+(realScale)+')', height: (100/realScale-2)+'%', 'aspect-ratio': $root.setupData.width/$root.setupData.height, width: $root.setupData.width+1+'cm'}" >
