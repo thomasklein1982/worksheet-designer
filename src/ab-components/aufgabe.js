@@ -1,4 +1,4 @@
-import { getFromScope, setInScope, getPropsPT, interpolateText, replaceScopeVariables } from "./createHtmlCode"
+import { getFromScope, setInScope, getPropsPT, interpolateText, replaceScopeVariables } from "../functions/createHtmlCode"
 import punkte from "./punkte";
 
 export default {

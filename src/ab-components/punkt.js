@@ -1,4 +1,4 @@
-import { getFromScope, setInScope, getPropsPT } from "./createHtmlCode"
+import { getFromScope, setInScope, getPropsPT } from "../functions/createHtmlCode"
 
 export default {
   props: {

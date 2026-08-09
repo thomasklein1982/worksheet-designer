@@ -1,44 +1,46 @@
 <template>
-  <div class="dialog-backdrop" :style="backdropStyle">
-    <div class="dialog" v-if="ab">
-      <div class="flex-1 flex-container-column" style="overflow: hidden">
-        <h1>Assets für {{ ab.name }}</h1>
-        <div class="flex-1 flex-container" style="flex-wrap: wrap; overflow: auto">
-          <AssetItem v-for="(a,i) in ab.assets" :asset="a"/>
-        </div>
-      </div>
-      <div style="text-align: right">
-        <button @click="uploadAsset">Hochladen</button>
-        <button @click="show=false">Schließen</button>
-      </div>
-    </div>
-  </div>
+  <Dialog ref="dialog">
+    <template #header v-if="ab">
+      <h1>Assets für {{ ab.name }}</h1>
+    </template>
+    <template #content>
+      <template v-if="ab">
+        <AssetItem 
+          v-for="(a,i) in ab.assets" 
+          :asset="a"
+          @remove="removeAssetAt(i)"
+        />
+      </template>
+    </template>
+    <template #controls>
+      <button @click="uploadAsset">Hochladen</button>
+      <button @click="$refs.dialog.close()">Schließen</button>
+    </template>
+  </Dialog>
 </template>
 
 <script>
 import Asset from '../classes/asset.js';
 import { upload } from '../functions/helper.js';
 import AssetItem from './asset-item.vue';
+import Dialog from './dialog.vue';
 
 
 export default{
   components: {
-    AssetItem
-  },
-  computed: {
-    backdropStyle(){
-      return {
-        display: this.show? '':'none'
-      };
-    }
+    AssetItem, Dialog
   },
   data(){
     return {
-      show: false,
       ab: null
     }
   },
   methods: {
+    removeAssetAt(index){
+      let a=confirm("Willst du das Asset '"+this.ab.assets[index].name+"' wirklich löschen?");
+      if(!a) return;
+      this.ab.removeAssetAt(index);
+    },
     async uploadAsset(){
       let files=await upload({multi: true, dataURL: true});
       if(!files) return;
@@ -55,7 +57,7 @@ export default{
     },
     open(ab){
       this.ab=ab;
-      this.show=true;
+      this.$refs.dialog.open();
     }
   }
 }

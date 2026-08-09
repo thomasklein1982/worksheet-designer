@@ -2,6 +2,7 @@
   <div class="screen">
     <MenuBar
       :abs="abs"
+      @new-ab="$refs.newAB.open()"
       @save="$root.saveAB(currentAB)"
       @rename="$root.renameAB(currentAB)"
       @print="$root.printAB(currentAB)"
@@ -13,11 +14,21 @@
     <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
       
       <template v-for="(ab, i) in abs">
-        <CodemirrorEditor ref="codemirrorEditor" :sync-object="ab" sync-attribute="html" v-show="i===currentABIndex" @change="updatePreview()" language="ab-html"/>
+        <CodemirrorEditor 
+          ref="codemirrorEditor" 
+          :sync-object="ab" 
+          sync-attribute="html" 
+          v-show="i===currentABIndex" 
+          @change="handleDocumentChange()" 
+          language="ab-html"
+        />
       </template>
       <Preview ref="preview" v-show="currentAB"/>
     </div>
     <AssetsManager ref="assetsmanager"/>
+    <NewAb ref="newAB"
+      @create="$root.createAB"
+    />
   </div>
 </template>
 
@@ -29,10 +40,11 @@ import Preview from './preview.vue';
 import Tabs from './tabs.vue';
 import myHtml from '../functions/ab-html.js';
 import AssetsManager from './assets-manager.vue';
+import NewAb from './new-ab.vue';
 
 export default{
   components: {
-    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager
+    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager, NewAb
   },
   props: {
     abs: Array
@@ -49,6 +61,10 @@ export default{
     }
   },  
   methods: {
+    handleDocumentChange(){
+      this.$root.saveLocally();
+      this.updatePreview();
+    },
     updatePreview(){
       let t=this.currentAB.getFullHtmlCode();
       this.$refs.preview.setContent(t);

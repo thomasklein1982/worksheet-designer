@@ -113,6 +113,9 @@ export default class Arbeitsblatt{
   addAsset(a){
     this.assets.push(a);
   }
+  removeAssetAt(index){
+    this.assets.splice(index,1);
+  }
   getAssetByName(name){
     for(let i=0;i<this.assets.length;i++){
       let a=this.assets[i];

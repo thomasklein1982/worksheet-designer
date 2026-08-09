@@ -1,4 +1,4 @@
-import { getFromScope, setInScope, getPropsPT, replaceScopeVariables, interpolateText } from "./createHtmlCode"
+import { getFromScope, setInScope, getPropsPT, replaceScopeVariables, interpolateText } from "../functions/createHtmlCode"
 
 export default {
   props: {

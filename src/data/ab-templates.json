@@ -1,0 +1,8 @@
+{
+  "templates": [
+    {
+      "name": "Leeres AB",
+      "content": "<setup papier=\"A4\"/>\n\n<seite>\n  <titel>Neues AB</titel>\n  \n  Text\n</seite>"
+    }
+  ]
+}

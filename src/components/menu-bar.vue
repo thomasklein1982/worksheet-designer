@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="$root.createAB">Neu</button>
+    <button @click="$emit('new-ab')">Neu</button>
     <button @click="$root.openAB">Öffnen</button>
     <button @click="$emit('save')" :disabled="!isABOpen">Speichern</button>
     <button @click="close()" :disabled="!isABOpen">Schließen</button>

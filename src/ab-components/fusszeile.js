@@ -1,4 +1,4 @@
-import { getPropsPT } from "./createHtmlCode";
+import { getPropsPT } from "../functions/createHtmlCode";
 
 export default {
   props: {

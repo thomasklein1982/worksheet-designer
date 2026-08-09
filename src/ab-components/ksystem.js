@@ -1,5 +1,5 @@
 import achse from "./achse";
-import { setInScope,getFromScope, getPropsPT } from "./createHtmlCode";
+import { setInScope,getFromScope, getPropsPT } from "../functions/createHtmlCode";
 
 export default {
   props: {

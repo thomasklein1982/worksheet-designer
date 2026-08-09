@@ -10,6 +10,9 @@ import { download, upload } from './functions/helper.js';
 import html2canvas from 'html2canvas';
 import {version} from "../package.json";
 import sleep from './functions/sleep.js';
+import localforage from 'localforage';
+
+const KEY_ABS="worksheet-designer-abs";
 
 export default{
   components: {
@@ -35,12 +38,31 @@ export default{
     let div=document.getElementById("div1cm");
     this.cmInPx=div.offsetWidth;
     console.log("cm in px",this.cmInPx);
+    this.loadLocally();
   },
   methods: {
+    saveLocally(){
+      let abs=[];
+      for(let i=0;i<this.abs.length;i++){
+        abs.push(this.abs[i].getSaveObject());
+      }
+      localforage.setItem(KEY_ABS,JSON.stringify(abs));
+    },
+    async loadLocally(){
+      let abs=await localforage.getItem(KEY_ABS);
+      if(!abs) return;
+      abs=JSON.parse(abs);
+      this.abs=[];
+      for(let i=0;i<abs.length;i++){
+        let ab=Arbeitsblatt.createFromSaveObject(abs[i]);
+        this.abs.push(ab);
+      }
+      this.$refs.editor.selectAB(0);
+    },
     getCurrentAB(){
       return this.$refs.editor.currentAB;
     },
-    createAB(){
+    createAB(template){
       let namePrefix="AB";
       let name=namePrefix;
       let index=this.getABIndexByName(name);
@@ -52,8 +74,10 @@ export default{
       }
       let a=new Arbeitsblatt();
       a.name=name;
+      a.html=template.content;
       this.abs.push(a);
       this.$refs.editor.selectAB(this.abs.length-1);
+      this.saveLocally();
     },
     saveAB(ab){
       download(JSON.stringify(ab.getSaveObject(),null," "),ab.name+".txt","text/txt");
@@ -62,6 +86,7 @@ export default{
       let n=prompt("Neuer Name",ab.name);
       if(!n) return;
       ab.name=n;
+      this.saveLocally();
     },
     getABIndexByName(name){
       for(let i=0;i<this.abs.length;i++){
@@ -133,6 +158,7 @@ export default{
         this.abs.push(a);
       }
       this.$refs.editor.selectAB(index);
+      this.saveLocally();
     }
   }
 }

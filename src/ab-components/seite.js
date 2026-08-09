@@ -1,4 +1,4 @@
-import { setInScope, getPropsPT, parseNode } from "./createHtmlCode";
+import { setInScope, getPropsPT, parseNode } from "../functions/createHtmlCode";
 import kopfzeile from "./kopfzeile-alt";
 
 export default{
@@ -14,7 +14,7 @@ export default{
     for(let i=0; i<templates.length;i++){
       tag=scope.templates["kopfzeile-"+templates[i]];
       if(tag){
-        let code=parseNode(scope.code,tag,scope,true);
+        let code=parseNode(scope.code,tag,scope,true).code;
         open+=code;
       }
     }
@@ -63,7 +63,7 @@ export default{
     for(let i=0; i<templates.length;i++){
       tag=scope.templates["fusszeile-"+templates[i]];
       if(tag){
-        let code=parseNode(scope.code,tag,scope,true);
+        let code=parseNode(scope.code,tag,scope,true).code;
         close+=code;
       }
     }

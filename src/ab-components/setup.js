@@ -1,4 +1,4 @@
-import { getPropsPT } from "./createHtmlCode";
+import { getPropsPT } from "../functions/createHtmlCode";
 
 export default {
   props: {
@@ -17,9 +17,19 @@ export default {
         w=parts[0]*1;
         h=parts[1]*1;
       }else{
-        if(papier==="a5"){
+        papier=papier.split(" ");
+        if(papier.indexOf("a5")>=0){
           h=21;
           w=14.8;
+        }
+        if(papier.indexOf("a4")>=0){
+          w=21;
+          h=29.7;
+        }
+        if(papier.indexOf("quer")>=0){
+          let c=w;
+          w=h;
+          h=c;
         }
       }
       app.setupData.width=w;

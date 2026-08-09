@@ -1,22 +1,22 @@
-import abc from "./abc";
-import abstand from "./abstand";
-import arbeitsblatt from "./arbeitsblatt";
-import aufgabe from "./aufgabe";
-import bild from "./bild";
-import box from "./box";
-import fusszeile from "./fusszeile";
-import grafik from "./grafik";
-import ifelse from "./ifelse";
-import karopapier from "./karopapier";
-import kopfzeile from "./kopfzeile";
-import kreis from "./kreis";
-import ksystem from "./ksystem";
-import loop from "./loop";
-import punkt from "./punkt";
-import punkte from "./punkte";
-import seite from "./seite";
-import setup from "./setup";
-import titel from "./titel";
+import abc from "../ab-components/abc";
+import abstand from "../ab-components/abstand";
+import arbeitsblatt from "../ab-components/arbeitsblatt";
+import aufgabe from "../ab-components/aufgabe";
+import bild from "../ab-components/bild";
+import box from "../ab-components/box";
+import fusszeile from "../ab-components/fusszeile";
+import grafik from "../ab-components/grafik";
+import ifelse from "../ab-components/ifelse";
+import karopapier from "../ab-components/karopapier";
+import kopfzeile from "../ab-components/kopfzeile";
+import kreis from "../ab-components/kreis";
+import ksystem from "../ab-components/ksystem";
+import loop from "../ab-components/loop";
+import punkt from "../ab-components/punkt";
+import punkte from "../ab-components/punkte";
+import seite from "../ab-components/seite";
+import setup from "../ab-components/setup";
+import titel from "../ab-components/titel";
 
 let SpecialTags={
   arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel
@@ -432,15 +432,14 @@ export function getPropsPT(elementNode,code,props,scope){
     let p=props[a];
     let v=attrs[a];
     delete attrs[a];
+    if(v===undefined){
+      if("default" in p) v=p.default;
+    }
     if(p===Number){
-      if(v) v*=1;
-      else v=0;
+      if(v!==undefined) v*=1;
     }else if(p.type){
       if(p.type===Number){
-        if(v) v*=1;
-        else{
-          if("default" in p) v=p.default; else v=0;
-        }
+        if(v!==undefined) v*=1;
       }else{
         if(v===undefined) v=p.default;
       }

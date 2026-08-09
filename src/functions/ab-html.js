@@ -1,6 +1,6 @@
 import {html} from "@codemirror/lang-html"
 
-const textTags=["div","abc","abstand","bild","box","grafik","formel"];
+const textTags=["div","abc","abstand","bild","box","grafik","formel","titel"];
 const topTags=["fusszeile","kopfzeile","seite"];
 const graphicTags=["karopapier","kreis","ksystem"];
 
@@ -91,7 +91,7 @@ const abHtml=html({
       children: textTags.concat(["aufgabe","material"])
     },
     titel: {
-      
+
     }
   }
 });

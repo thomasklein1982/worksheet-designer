@@ -1,11 +1,11 @@
 <template>
-  <div style="width: 200px; height: 200px;">
+  <div style="border: 1pt solid black; overflow: auto">
     {{ asset.name }}
     <img v-if="isImage" :src="asset.dataURL" style="max-width: 100px; max-height: 100px"/>
     <div>
-      <button @click="download">Herunterladen</button>
-      <button @click="remove">Löschen</button>
-      <button @click="rename">Umbenennen</button>
+      <button @click="download">💾</button>
+      <button @click="remove">🗑</button>
+      <button @click="rename">✎</button>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default{
     rename(){
       let a=prompt("Neuen Name eingeben:",this.asset.name);
       if(!a) return;
-      
+
       this.asset.name=a;
     }
   }

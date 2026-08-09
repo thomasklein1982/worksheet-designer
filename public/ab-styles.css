@@ -3,6 +3,10 @@
   padding: 0cm;
 } */
 
+:root{
+  --abc-indent: 1.5em;
+}
+
 html,body{
   margin: 0;
   padding: 0;
@@ -31,15 +35,117 @@ html,body{
 
 .teilaufgaben{
   counter-reset: teilaufgaben;
-  display: grid; 
-  grid-auto-flow: column;
+  display: grid;
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
 }
 
-.teilaufgaben>*::before{
+.teilaufgaben-a>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,lower-alpha) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-a>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben,lower-alpha) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-a-rbclose>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben,lower-alpha) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-a-rbclose>*::before{
   counter-increment: teilaufgaben;
   content: counter(teilaufgaben,lower-alpha) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-a-dot>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,lower-alpha) ". ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+
+.teilaufgaben-A>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,upper-alpha) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-A>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben,upper-alpha) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-A-rbclose>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben,upper-alpha) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-A-rbclose>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,upper-alpha) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-A-dot>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben,upper-alpha) ". ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+
+.teilaufgaben-n>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-n>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben) " ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-rbopen-n-rbclose>*::before{
+  counter-increment: teilaufgaben;
+  content: "(" counter(teilaufgaben) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-n-rbclose>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben) ") ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+.teilaufgaben-n-dot>*::before{
+  counter-increment: teilaufgaben;
+  content: counter(teilaufgaben) ". ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+
+
+.teilaufgaben-arrow>*::before{
+  counter-increment: teilaufgaben;
+  content: "⇰ ";
+  width: var(--abc-indent);
+  display: inline-block;
+}
+
+.teilaufgaben-o>*::before{
+  counter-increment: teilaufgaben;
+  content: "• ";
+  width: var(--abc-indent);
+  display: inline-block;
 }
 
 .karopapier{

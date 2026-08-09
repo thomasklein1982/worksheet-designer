@@ -30,7 +30,7 @@ import {
 import {lintKeymap} from "@codemirror/lint"
 import { html } from "@codemirror/lang-html";
 import abHtml from "../functions/ab-html";
-import createHtmlCode from "../ab-components/createHtmlCode";
+import createHtmlCode from "../functions/createHtmlCode";
 
 
 export default{

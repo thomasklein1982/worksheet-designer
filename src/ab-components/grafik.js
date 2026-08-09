@@ -1,4 +1,4 @@
-import { setInScope, getPropsPT } from "./createHtmlCode";
+import { setInScope, getPropsPT } from "../functions/createHtmlCode";
 import karopapier from "./karopapier";
 
 export default{
