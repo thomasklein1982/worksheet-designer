@@ -14,7 +14,7 @@ export default{
     for(let i=0; i<templates.length;i++){
       tag=scope.templates["kopfzeile-"+templates[i]];
       if(tag){
-        let code=parseNode(scope.code,tag,scope,true).code;
+        let code=parseNode(scope.code,tag,scope,true);
         open+=code;
       }
     }
@@ -63,7 +63,7 @@ export default{
     for(let i=0; i<templates.length;i++){
       tag=scope.templates["fusszeile-"+templates[i]];
       if(tag){
-        let code=parseNode(scope.code,tag,scope,true).code;
+        let code=parseNode(scope.code,tag,scope,true);
         close+=code;
       }
     }
