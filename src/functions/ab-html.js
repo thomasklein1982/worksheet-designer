@@ -1,6 +1,6 @@
 import {html} from "@codemirror/lang-html"
 
-const textTags=["div","abc","abstand","bild","box","grafik","formel","titel"];
+const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer"];
 const topTags=["fusszeile","kopfzeile","seite"];
 const graphicTags=["karopapier","kreis","ksystem"];
 
@@ -92,6 +92,17 @@ const abHtml=html({
     },
     titel: {
 
+    },
+    "mathe-trainer": {
+      attrs: {
+        link: null,
+        nummer: ["1","2","3","4","5","6","7","8","9"],
+        spalten: ["1","2","3","4"],
+        hoehe: ["1cm","2cm","3cm","4cm","5cm","6cm"],
+        seed: ["1","2","3","4","5"]
+      },
+      globalAttrs: false,
+      children: null
     }
   }
 });

@@ -19,6 +19,9 @@ export const updateServiceWorker=updateSW;
 const app = createApp(App);
 window.app=app.mount('#app');
 
+
+
+
 async function fetchFiles(){
   let f;
   f=await fetch("./katex/katex.min.js");

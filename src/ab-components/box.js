@@ -6,12 +6,13 @@ export default {
     rechts: String,
     oben: String,
     unten: String,
+    breite: String,
     style: {
       type: String,
       default: ""
     }
   },
-  create(links,rechts,oben,unten, style,pt,scope){
+  create(links,rechts,oben,unten, breite, style,pt,scope){
     let css="";
     if(links || rechts || oben || unten) css+="position: absolute;";
     if(links){
@@ -38,6 +39,9 @@ export default {
         css+="max-height: calc(100% - "+unten+");";
       }
     }
+    if(breite){
+      css+="width: "+breite+";";
+    }
     css+=style;
     let open=`<div ${pt} class="box" style="${css}">`;
     let close=`</div>`;
@@ -45,6 +49,6 @@ export default {
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props.links,props.rechts,props.oben,props.unten,props.style,pt,scope);
+    return this.create(props.links,props.rechts,props.oben,props.unten,props.breite,props.style,pt,scope);
   }
 }

@@ -4,6 +4,7 @@ import arbeitsblatt from "../ab-components/arbeitsblatt";
 import aufgabe from "../ab-components/aufgabe";
 import bild from "../ab-components/bild";
 import box from "../ab-components/box";
+import formel from "../ab-components/formel-not-used";
 import fusszeile from "../ab-components/fusszeile";
 import grafik from "../ab-components/grafik";
 import ifelse from "../ab-components/ifelse";
@@ -12,6 +13,7 @@ import kopfzeile from "../ab-components/kopfzeile";
 import kreis from "../ab-components/kreis";
 import ksystem from "../ab-components/ksystem";
 import loop from "../ab-components/loop";
+import matheTrainer from "../ab-components/mathe-trainer";
 import punkt from "../ab-components/punkt";
 import punkte from "../ab-components/punkte";
 import seite from "../ab-components/seite";
@@ -19,7 +21,7 @@ import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer
 };
 let IgnoreTags={
   "elseif": true, "else": true

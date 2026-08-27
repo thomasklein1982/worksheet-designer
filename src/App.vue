@@ -11,6 +11,7 @@ import html2canvas from 'html2canvas';
 import {version} from "../package.json";
 import sleep from './functions/sleep.js';
 import localforage from 'localforage';
+import {toCanvas, toJpeg, toPixelData, toPng} from 'html-to-image';
 
 const KEY_ABS="worksheet-designer-abs";
 
@@ -114,15 +115,16 @@ export default{
           pdf.addPage();
         }
         let seite=seiten[i];
-        let canvas = await html2canvas(seite, {
-          scale: 2, // 2x resolution for sharper output
-          useCORS: true, // Enable cross-origin images
-          logging: false,
-          backgroundColor: "#ffffff",
-        });
+        // let canvas = await html2canvas(seite, {
+        //   scale: 2, // 2x resolution for sharper output
+        //   useCORS: true, // Enable cross-origin images
+        //   logging: false,
+        //   backgroundColor: "#ffffff",
+        // });
         
+        let canvas=await toCanvas(seite, {pixelRatio: 2});
         let imgData = canvas.toDataURL("image/png");
-
+        //let imgData=await toPng(seite);
         pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, null, 'FAST');
       }
       pdf.save(ab.name+".pdf");
