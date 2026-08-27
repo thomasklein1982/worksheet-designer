@@ -97,7 +97,7 @@ export default function createHtmlCode(ab,code,tree){
   function replaceInterpolate(index,code){
     try{
       code=replaceScopeVariables(code,scope);
-      eval("window.value="+code);
+      window.eval("window.value="+code);
     }catch(e){
       window.value="Interpolationsfehler "+code;
     }
@@ -313,7 +313,7 @@ export function getFirstHtmlChild(node,code){
 }
 
 export function runCodeWithScope(code){
-  return eval("let scope=window.scope; let $=window.$;\n"+code+";");
+  return window.eval("let scope=window.scope; let $=window.$;\n"+code+";");
 }
 
 export function pushLayerToScope(scope, layer){
