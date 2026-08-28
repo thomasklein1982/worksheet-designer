@@ -16,10 +16,9 @@ const updateSW=registerSW({
 });
 export const updateServiceWorker=updateSW;
 
-const app = createApp(App);
-window.app=app.mount('#app');
-
-
+const app2 = createApp(App);
+window.app=app2.mount('#app');
+export const app=window.app;
 
 
 async function fetchFiles(){

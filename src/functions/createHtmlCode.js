@@ -5,6 +5,7 @@ import aufgabe from "../ab-components/aufgabe";
 import bild from "../ab-components/bild";
 import box from "../ab-components/box";
 import formel from "../ab-components/formel-not-used";
+import fragment from "../ab-components/fragment";
 import fusszeile from "../ab-components/fusszeile";
 import grafik from "../ab-components/grafik";
 import ifelse from "../ab-components/ifelse";
@@ -19,15 +20,28 @@ import punkte from "../ab-components/punkte";
 import seite from "../ab-components/seite";
 import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
+import weblink from "../ab-components/weblink";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink
 };
 let IgnoreTags={
   "elseif": true, "else": true
 }
 
-export default function createHtmlCode(ab,code,tree){
+export function createHtmlCode(code,tree,scope){
+  let newCode;
+  try{
+    let node=tree.topNode;
+    newCode=parseNode(code,node,scope);
+  }catch(e){
+    console.log(e);
+    newCode=code;
+  }
+  return newCode;
+}
+
+export default function createFullHtmlCode(ab,code,tree){
   app.setupData.width=21;
   app.setupData.height=29.7;
 
@@ -67,13 +81,8 @@ export default function createHtmlCode(ab,code,tree){
     code
   };
   window.$=scope.variables;
-  try{
-    let node=tree.topNode;
-    newCode+=parseNode(code,node,scope);
-  }catch(e){
-    console.log(e);
-    newCode=code;
-  }
+  newCode+=createHtmlCode(code,tree,scope);
+  
   newCode+=`
   <script>
   scope.variables.seite=${scope.endVariables.seite};
@@ -209,7 +218,9 @@ export function parseNode(code,node,scope,forceTemplateRendering){
       let tagCode=code.substring(tag.from,tag.to);
       if(st.isTemplate && !forceTemplateRendering){
         let name=st.createFromHtml(tag,code,scope,true);
-        scope.templates[name]=tag;
+        scope.templates[name]={
+          node: tag, code: code
+        };
         goOn=false;
       }else{
         pushLayerToScope(scope, {});
@@ -303,6 +314,15 @@ export function parseNode(code,node,scope,forceTemplateRendering){
     
   }
   return newCode;
+}
+
+export function getTagContentAsString(node,code){
+  let nodeCode=code.substring(node.from,node.to);
+  let from=nodeCode.indexOf(">");
+  let to=nodeCode.lastIndexOf("<");
+  
+  let content=nodeCode.substring(from+1,to);
+  return content;
 }
 
 export function getFirstHtmlChild(node,code){

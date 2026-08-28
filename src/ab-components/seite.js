@@ -10,60 +10,22 @@ export default{
     scope.endVariables.seite++;
     let templates=["links","mitte","rechts"];
     let open=`<div class='papier'><div class="seite"><div class="kopfzeile">`;
-    let tag;
+    let template;
     for(let i=0; i<templates.length;i++){
-      tag=scope.templates["kopfzeile-"+templates[i]];
-      if(tag){
-        let code=parseNode(scope.code,tag,scope,true);
+      template=scope.templates["kopfzeile-"+templates[i]];
+      if(template){
+        let code=parseNode(template.code,template.node,scope,true);
         open+=code;
       }
     }
     open+=`</div>`;
-    // let tag=scope.templates.kopfzeile;
-    // if(tag){
-    //   let code=parseNode(scope.code,tag,scope,true);
-    //   open+=code;
-    // }
     open+=`<div class="seiteninhalt">`;
     let close=`</div>`;
-    // let flinks=scope.templates["fusszeile-links"];
-    // let fmitte=scope.templates["fusszeile-mitte"];
-    // let frechts=scope.templates["fusszeile-rechts"];
-    // let zeile="";
-    // if(flinks){
-    //   if(fmitte){
-    //     if(frechts){
-    //       zeile="lmr";
-    //     }else{
-    //       zeile="lm";
-    //     }
-    //   }else{
-    //     if(frechts){
-    //       zeile="lr";
-    //     }else{
-    //       zeile="l";
-    //     }
-    //   }
-    // }else{
-    //   if(fmitte){
-    //     if(frechts){
-    //       zeile="mr";
-    //     }else{
-    //       zeile="m";
-    //     }
-    //   }else{
-    //     if(frechts){
-    //       zeile="r";
-    //     }else{
-    //       zeile="none";
-    //     }
-    //   }
-    // }
     close+=`<div class="fusszeile">`;
     for(let i=0; i<templates.length;i++){
-      tag=scope.templates["fusszeile-"+templates[i]];
-      if(tag){
-        let code=parseNode(scope.code,tag,scope,true);
+      template=scope.templates["fusszeile-"+templates[i]];
+      if(template){
+        let code=parseNode(template.code,template.node,scope,true);
         close+=code;
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <Editor ref="editor" :abs="abs"/>
+  <Editor ref="editor" :abs="abs" :fragments="fragments"/>
 </template>
 
 <script>
@@ -14,6 +14,7 @@ import localforage from 'localforage';
 import {toCanvas, toJpeg, toPixelData, toPng} from 'html-to-image';
 
 const KEY_ABS="worksheet-designer-abs";
+const KEY_FRAGMENTS="worksheet-designer-fragments";
 
 export default{
   components: {
@@ -27,6 +28,7 @@ export default{
   data(){
     return {
       abs: [],
+      fragments: [],
       cmInPx: 1,
       version: version,
       setupData: {
@@ -42,14 +44,34 @@ export default{
     this.loadLocally();
   },
   methods: {
-    saveLocally(){
+    saveFragmentsLocally(){
+      let fragments=[];
+      for(let i=0;i<this.fragments.length;i++){
+        fragments.push(this.fragments[i].getSaveObject());
+      }
+      localforage.setItem(KEY_FRAGMENTS,JSON.stringify(fragments));
+    },
+    saveABsLocally(){
       let abs=[];
       for(let i=0;i<this.abs.length;i++){
         abs.push(this.abs[i].getSaveObject());
       }
       localforage.setItem(KEY_ABS,JSON.stringify(abs));
     },
+    saveLocally(){
+      this.saveABsLocally();
+      this.saveFragmentsLocally();
+    },
     async loadLocally(){
+      let fragments=await localforage.getItem(KEY_FRAGMENTS);
+      if(fragments){
+        fragments=JSON.parse(fragments);
+        this.fragments=[];
+        for(let i=0;i<fragments.length;i++){
+          let f=Arbeitsblatt.createFromSaveObject(fragments[i]);
+          this.fragments.push(f);
+        }
+      }
       let abs=await localforage.getItem(KEY_ABS);
       if(!abs) return;
       abs=JSON.parse(abs);
@@ -62,6 +84,30 @@ export default{
     },
     getCurrentAB(){
       return this.$refs.editor.currentAB;
+    },
+    getFragmentIndexByName(name){
+      for(let i=0;i<this.fragments.length;i++){
+        let f=this.fragments[i];
+        if(f.name===name){
+          return i;
+        }
+      }
+      return -1;
+    },
+    getFragmentByName(name){
+      let index=this.getFragmentIndexByName(name);
+      if(index<0) return null;
+      return this.fragments[index];
+    },
+    saveAsFragment(ab){
+      let index=this.getFragmentIndexByName(ab.name);
+      ab.assets=[];
+      if(index<0){
+        this.fragments.push(ab);
+      }else{
+        this.fragments[index]=ab;
+      }
+      this.saveFragmentsLocally();
     },
     createAB(template){
       let namePrefix="AB";
@@ -143,24 +189,27 @@ export default{
       //   window.print();
       // },100);
     },
-    async openAB(){
-      let f=await upload();
-      if(!f) return;
-      let a=Arbeitsblatt.createFromSaveObject(JSON.parse(f.code));
-      if(!a) return;
-      let pos=f.fileName.lastIndexOf(".");
-      a.name=f.fileName.substring(0,pos);
-      let index=this.getABIndexByName(a.name);
+    openAB(ab){
+      let index=this.getABIndexByName(ab.name);
       if(index>=0){
         let ans=confirm("Du hast diese Datei bereits geöffnet.\n\nWenn du sie erneut öffnest, gehen deine Änderungen verloren.\n\nWillst du fortfahren?");
         if(!ans) return;
         this.abs.splice(index,1,a);
       }else{
         index=this.abs.length;
-        this.abs.push(a);
+        this.abs.push(ab);
       }
       this.$refs.editor.selectAB(index);
-      this.saveLocally();
+      this.saveABsLocally();
+    },
+    async uploadAndOpenAB(){
+      let f=await upload();
+      if(!f) return;
+      let a=Arbeitsblatt.createFromSaveObject(JSON.parse(f.code));
+      if(!a) return;
+      let pos=f.fileName.lastIndexOf(".");
+      a.name=f.fileName.substring(0,pos);
+      this.openAB(a);
     }
   }
 }

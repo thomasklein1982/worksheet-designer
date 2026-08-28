@@ -4,11 +4,13 @@
       :abs="abs"
       @new-ab="$refs.newAB.open()"
       @save="$root.saveAB(currentAB)"
+      @save-as-fragment="$root.saveAsFragment(currentAB)"
       @rename="$root.renameAB(currentAB)"
       @print="$root.printAB(currentAB)"
       @assets="$refs.assetsmanager.open(currentAB)"
       @export="$root.exportAB(currentAB)"
       @close="closeAB(currentABIndex)"
+      @fragments="$refs.fragmentManager.open()"
     />
     <Tabs :abs="abs" :selected-index="currentABIndex" @change-tab="selectAB"/>
     <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
@@ -26,6 +28,7 @@
       <Preview ref="preview" v-show="currentAB"/>
     </div>
     <AssetsManager ref="assetsmanager"/>
+    <FragmentManager @open-fragment="openFragment" :fragments="fragments" ref="fragmentManager"/>
     <NewAb ref="newAB"
       @create="$root.createAB"
     />
@@ -41,13 +44,15 @@ import Tabs from './tabs.vue';
 import myHtml from '../functions/ab-html.js';
 import AssetsManager from './assets-manager.vue';
 import NewAb from './new-ab.vue';
+import FragmentManager from './fragment-manager.vue';
 
 export default{
   components: {
-    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager, NewAb
+    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager, NewAb, FragmentManager
   },
   props: {
-    abs: Array
+    abs: Array,
+    fragments: Array
   },
   computed: {
     currentAB(){
@@ -61,6 +66,10 @@ export default{
     }
   },  
   methods: {
+    openFragment(f){
+      this.$refs.fragmentManager.close();
+      this.$root.openAB(f);
+    },
     handleDocumentChange(){
       this.$root.saveLocally();
       this.updatePreview();
@@ -82,6 +91,7 @@ export default{
         this.currentABIndex--;
         if(this.currentABIndex<0) this.currentABIndex=0;
       }
+      this.$root.saveABsLocally();
     }
   }
 }

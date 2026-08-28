@@ -1,13 +1,15 @@
 <template>
   <div>
     <button @click="$emit('new-ab')">Neu</button>
-    <button @click="$root.openAB">Öffnen</button>
+    <button @click="$root.uploadAndOpenAB()">Öffnen</button>
     <button @click="$emit('save')" :disabled="!isABOpen">Speichern</button>
     <button @click="close()" :disabled="!isABOpen">Schließen</button>
+    <button @click="$emit('save-as-fragment')" :disabled="!isABOpen">Als Fragment speichern</button>
     <button @click="$emit('rename')" :disabled="!isABOpen">Umbenennen</button>
     <button @click="$emit('print')" :disabled="!isABOpen">Drucken</button>
     <button @click="$emit('export')" :disabled="!isABOpen">Exportieren</button>
     <button @click="$emit('assets')" :disabled="!isABOpen">Assets</button>
+    <button @click="$emit('fragments')">Fragmente</button>
     <button @click="$root.settings">Einstellungen</button>
     {{ $root.version }}
   </div>

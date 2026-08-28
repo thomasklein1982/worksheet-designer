@@ -66,8 +66,6 @@ export default class Arbeitsblatt{
 </seite>`;
 
     this.realHtml=this.html;
-    this.js="";
-    this.css="";
   }
   
   getFullHtmlCode(production){

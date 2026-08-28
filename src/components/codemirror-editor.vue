@@ -30,7 +30,7 @@ import {
 import {lintKeymap} from "@codemirror/lint"
 import { html } from "@codemirror/lang-html";
 import abHtml from "../functions/ab-html";
-import createHtmlCode from "../functions/createHtmlCode";
+import createFullHtmlCode from "../functions/createHtmlCode";
 
 
 export default{
@@ -64,7 +64,7 @@ export default{
             let code=this.getText();
             if(this.syncAttribute==="html"){
               let tree=update.state.tree;
-              this.syncObject.realHtml=createHtmlCode(this.$root.getCurrentAB(),code,tree);
+              this.syncObject.realHtml=createFullHtmlCode(this.$root.getCurrentAB(),code,tree);
             }
             this.syncObject[this.syncAttribute]=code;
             this.$emit("change");

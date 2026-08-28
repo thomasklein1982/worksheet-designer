@@ -1,4 +1,4 @@
-import { getFromScope, setInScope, getPropsPT, replaceScopeVariables, interpolateText } from "../functions/createHtmlCode"
+import { getFromScope, setInScope, getPropsPT, replaceScopeVariables, interpolateText, getTagContentAsString } from "../functions/createHtmlCode"
 
 export default {
   props: {
@@ -22,11 +22,7 @@ export default {
   },
   createFromHtml(node,code,scope){
     let {props,pt}=getPropsPT(node,code,this.props,scope);
-    let nodeCode=code.substring(node.from,node.to);
-    let from=nodeCode.indexOf(">");
-    let to=nodeCode.lastIndexOf("<");
-    
-    let content=nodeCode.substring(from+1,to);
+    let content=getTagContentAsString(node,code);
     let anzahl=content*1;
     return this.create(anzahl,pt,scope);
   }
