@@ -191,6 +191,7 @@ html,body{
   position: relative;
   font-family: sans-serif;
   font-size: 12pt;
+  text-align: justify;
 }
 
 .seiteninhalt{
@@ -276,6 +277,7 @@ html,body{
 
 .aufgabe{
   position: relative;
+  margin: 2ex 0;
 }
 
 .titel{
@@ -293,4 +295,8 @@ html,body{
 
 .weblink{
   color: inherit;
+}
+
+.auto-absatz{
+  margin: 0.1em 0;
 }

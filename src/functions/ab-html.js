@@ -103,6 +103,20 @@ const abHtml=html({
       },
       globalAttrs: false,
       children: null
+    },
+    fragment: {
+      attrs: {
+        name: null,
+      },
+      globalAttrs: false,
+      children: null
+    },
+    weblink: {
+      attrs: {
+        
+      },
+      globalAttrs: false,
+      children: null
     }
   }
 });

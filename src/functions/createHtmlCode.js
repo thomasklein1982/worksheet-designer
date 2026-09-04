@@ -29,6 +29,8 @@ let IgnoreTags={
   "elseif": true, "else": true
 }
 
+let freeLineMarksNewParagraph=true;
+
 export function createHtmlCode(code,tree,scope){
   let newCode;
   try{
@@ -304,6 +306,7 @@ export function parseNode(code,node,scope,forceTemplateRendering){
     }
   }else if(node.name==="Text"){
     let t=interpolateText(code.substring(node.from,node.to),scope);
+    if(freeLineMarksNewParagraph) t=convertFreeLinesToParagraphs(t);
     newCode+=t;
   }else{
     let child=node.firstChild;
@@ -314,6 +317,39 @@ export function parseNode(code,node,scope,forceTemplateRendering){
     
   }
   return newCode;
+}
+
+function convertFreeLinesToParagraphs(text){
+  let parts=[];
+  let newlineCount=0;
+  let part="";
+  let textStarted=false;
+  for(let i=0;i<text.length;i++){
+    let c=text.charAt(i);
+    let isWhitespace=/\s/.test(c);
+    if(textStarted){
+      if(c==="\n"){
+        newlineCount++;
+      }else if(newlineCount>0){ 
+        if(!isWhitespace){
+          if(newlineCount>=2){
+            parts.push(part);
+            part="";
+          }
+          newlineCount=0;
+        }
+      }
+    }else{
+      if(!isWhitespace) textStarted=true;
+    }
+    part+=c;
+  }
+  parts.push(part);
+  let code=parts[0];
+  for(let i=1;i<parts.length;i++){
+    code+="\n<p class='auto-absatz'>"+parts[i]+"</p>";
+  }
+  return code;
 }
 
 export function getTagContentAsString(node,code){
