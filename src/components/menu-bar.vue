@@ -11,6 +11,7 @@
     <button @click="$emit('assets')" :disabled="!isABOpen">Assets</button>
     <button @click="$emit('fragments')">Fragmente</button>
     <button @click="$root.settings">Einstellungen</button>
+    <button @click="$emit('help')">Hilfe</button>
     {{ $root.version }}
   </div>
 </template>

@@ -1,6 +1,6 @@
 import {html} from "@codemirror/lang-html"
 
-const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer"];
+const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer","hessenkasten","daneben","zentriert"];
 const topTags=["fusszeile","kopfzeile","seite"];
 const graphicTags=["karopapier","kreis","ksystem"];
 
@@ -25,8 +25,8 @@ const abHtml=html({
     },
     "abc": {
       attrs: {
-        "zeilen": ["1","2","3","4","5","6","7"],
-        "spalten": ["1","2","3","4","5","6","7"]
+        "spalten": ["1","2","3","4","5","6","7"],
+        zeichen: ["a)","1)","1.", "(A)", "◼"]
       },
       globalAttrs: false,
       children: ["div","box","formel"]
@@ -90,6 +90,13 @@ const abHtml=html({
       globalAttrs: false,
       children: textTags.concat(["aufgabe","material"])
     },
+    hessenkasten: {
+      attrs: {
+        breite: ["4cm","5cm","6cm","7cm","8cm"]
+      },
+      globalAttrs: false,
+      children: textTags
+    },
     titel: {
 
     },
@@ -117,6 +124,17 @@ const abHtml=html({
       },
       globalAttrs: false,
       children: null
+    },
+    daneben: {
+      attrs: {
+        links: null
+      },
+      globalAttrs: false,
+      children: textTags
+    },
+    zentriert: {
+      globalAttrs: false,
+      children: textTags
     }
   }
 });

@@ -30,9 +30,20 @@ export default{
   },
   methods: {
     setContent(t){
+
+      let oldDoc=this.$refs.content?.childNodes[0]?.contentDocument;
+      let scrollX=0;
+      let scrollY=0;
+      if(oldDoc){
+        scrollX=oldDoc.documentElement.scrollLeft;
+        //window.iframe.contentDocument.documentElement.scrollTop
+        scrollY=oldDoc.documentElement.scrollTop;
+      }
+      console.log(scrollX,scrollY);
       //this.$refs.content.$el.innerHTML=t;
       this.content=t;
       let iframe=document.createElement("iframe");
+      window.iframe=iframe;
       this.iframe=iframe;
       iframe.style="background-color: white; width: 100%; height: 100%; overflow: auto";
       if(this.$refs.content.firstChild){
@@ -43,8 +54,15 @@ export default{
       const blob = URL.createObjectURL(
         new Blob([code], { type: "text/html" })
       );
+      iframe.onload=()=>{
+        iframe.contentDocument.documentElement.scrollLeft=scrollX;
+        iframe.contentDocument.documentElement.scrollTop=scrollY;
+      };
       iframe.src=blob;
       URL.revokeObjectURL(blob);
+      
+      setTimeout(()=>{
+      },100)
     }
   }
 }

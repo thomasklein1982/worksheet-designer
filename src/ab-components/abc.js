@@ -1,35 +1,66 @@
-import { getFromScope, setInScope, getPropsPT } from "../functions/createHtmlCode";
+import { getFromScope, setInScope, getPropsPT, getChildElements } from "../functions/createHtmlCode";
 
 export default {
   props: {
-    zeilen: Number,
     spalten: Number,
     zeichen: {
       type: String /*a, A, n, -, o, ., >*/,
       default: "a)"
+    },
+    style: {
+      type: String,
+      default: ""
     }
   },
-  create(zeilen,spalten, zeichen, pt,scope){
+  create(anzahlItems,spalten, zeichen, style, pt,scope){
+    if(!spalten) spalten=1;
+    let zeilen=Math.ceil(anzahlItems/spalten);
+    
     zeichen=zeichen.trim();
-    zeichen=zeichen.replace(/</g,"arrow");
-    if(zeichen.startsWith("(")) zeichen="rbopen-"+zeichen.substring(1);
-    if(zeichen.endsWith(")")) zeichen=zeichen.substring(0,zeichen.length-1)+"-rbclose";
-    if(zeichen.endsWith(".")) zeichen=zeichen.substring(0,zeichen.length-1)+"-dot";
-
-    let gridTemplate="";
-    if(spalten!==undefined){
-      gridTemplate+=`grid-template-columns: repeat(${spalten},1fr);`;
-    }
-    if(zeilen!==undefined){
-      gridTemplate+=`grid-template-rows: repeat(${zeilen},1fr);`;
-      if(spalten===undefined){
-        gridTemplate+="grid-auto-flow: column;";
+    let before="";
+    let after="";
+    let pos=zeichen.indexOf("a");
+    if(pos>=0){
+      before=zeichen.substring(0,pos);
+      after=zeichen.substring(pos+1);
+      zeichen="a";
+    }else{
+      pos=zeichen.indexOf("A");
+      if(pos>=0){
+        before=zeichen.substring(0,pos);
+        after=zeichen.substring(pos+1);
+        zeichen="A";
+      }else{
+        pos=zeichen.indexOf("1");
+        if(pos>=0){
+          before=zeichen.substring(0,pos);
+          after=zeichen.substring(pos+1);
+          zeichen="1";
+        }
       }
     }
-    if(zeilen!==undefined && spalten!==undefined){
-      gridTemplate+="grid-auto-flow: column;";
+
+    let gridTemplate="";
+    gridTemplate+=`grid-template-columns: repeat(${spalten},1.3em 1fr);`;
+    gridTemplate+=`grid-template-rows: repeat(${zeilen},1fr);`;
+    gridTemplate+="grid-auto-flow: column;";
+
+    let open=`<div ${pt} class="abc" style="${style};${gridTemplate}">`;
+    for(let i=1;i<=zeilen*spalten;i++){
+      let c=Math.ceil(i/zeilen)*2-1;
+      let r=(i-1)%zeilen+1;
+      let z;
+      if(i>anzahlItems) z="";
+      else{
+        z=before;
+        if(zeichen==="a") z+=String.fromCodePoint(96+i);
+        else if(zeichen==="1") z+=i;
+        else if(zeichen==="A") z+=String.fromCodePoint(64+i);
+        else z+=zeichen;
+        z+=after;
+      }
+      open+=`<div class="abc-number" style="grid-row: ${r}; grid-column: ${c};">${z}</div>`;
     }
-    let open=`<div ${pt} class="teilaufgaben teilaufgaben-${zeichen}" style="${gridTemplate}">`;
     let close=`</div>`;
     // setInScope(scope,"abc",{
     //   zeilen,spalten,anzahlTeilaufgaben: 0, zeichen
@@ -38,6 +69,9 @@ export default {
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props.zeilen,props.spalten,props.zeichen,pt,scope);
+    console.log("abc",node);
+    let childElements=getChildElements(node);
+    console.log(childElements);
+    return this.create(childElements.length,props.spalten,props.zeichen,props.style,pt,scope);
   }
 }

@@ -11,10 +11,10 @@
       @export="$root.exportAB(currentAB)"
       @close="closeAB(currentABIndex)"
       @fragments="$refs.fragmentManager.open()"
+      @help="$refs.help.toggle()"
     />
     <Tabs :abs="abs" :selected-index="currentABIndex" @change-tab="selectAB"/>
-    <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
-      
+    <div class="flex-1" style="position: relative; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
       <template v-for="(ab, i) in abs">
         <CodemirrorEditor 
           ref="codemirrorEditor" 
@@ -26,6 +26,10 @@
         />
       </template>
       <Preview ref="preview" v-show="currentAB"/>
+      <Help 
+        ref="help"
+        @insert="insert"
+      />
     </div>
     <AssetsManager ref="assetsmanager"/>
     <FragmentManager @open-fragment="openFragment" :fragments="fragments" ref="fragmentManager"/>
@@ -45,10 +49,11 @@ import myHtml from '../functions/ab-html.js';
 import AssetsManager from './assets-manager.vue';
 import NewAb from './new-ab.vue';
 import FragmentManager from './fragment-manager.vue';
+import Help from './help.vue';
 
 export default{
   components: {
-    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager, NewAb, FragmentManager
+    CodemirrorEditor, MenuBar, Preview, Tabs, AssetsManager, NewAb, FragmentManager, Help
   },
   props: {
     abs: Array,
@@ -66,6 +71,11 @@ export default{
     }
   },  
   methods: {
+    insert(text){
+      let cm=this.$refs.codemirrorEditor[this.currentABIndex];
+      cm.insert(text);
+      cm.editor.focus();
+    },
     openFragment(f){
       this.$refs.fragmentManager.close();
       this.$root.openAB(f);

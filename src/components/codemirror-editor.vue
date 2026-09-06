@@ -130,6 +130,15 @@ export default{
     getText(){
       return this.editor.state.doc.toString();
     },
+    insert(text){
+      let view=this.editor;
+      let pos=view.state.selection.main.head;
+      view.dispatch({changes: {
+        from: pos,
+        to: pos,
+        insert: text
+      }});
+    },
     setText(code){
       let view=this.editor;
       view.dispatch({changes: {

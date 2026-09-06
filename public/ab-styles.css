@@ -33,121 +33,6 @@ html,body{
   font-family: sans-serif;
 }
 
-.teilaufgaben{
-  counter-reset: teilaufgaben;
-  display: grid;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-}
-
-.teilaufgaben-a>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,lower-alpha) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-a>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben,lower-alpha) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-a-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben,lower-alpha) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-a-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,lower-alpha) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-a-dot>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,lower-alpha) ". ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-
-.teilaufgaben-A>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,upper-alpha) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-A>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben,upper-alpha) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-A-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben,upper-alpha) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-A-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,upper-alpha) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-A-dot>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben,upper-alpha) ". ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-
-.teilaufgaben-n>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-n>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben) " ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-rbopen-n-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: "(" counter(teilaufgaben) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-n-rbclose>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben) ") ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-.teilaufgaben-n-dot>*::before{
-  counter-increment: teilaufgaben;
-  content: counter(teilaufgaben) ". ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-
-
-.teilaufgaben-arrow>*::before{
-  counter-increment: teilaufgaben;
-  content: "⇰ ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-
-.teilaufgaben-o>*::before{
-  counter-increment: teilaufgaben;
-  content: "• ";
-  width: var(--abc-indent);
-  display: inline-block;
-}
-
 .karopapier{
   stroke: gray; 
   stroke-width: 0.04;
@@ -210,6 +95,7 @@ html,body{
   grid-column: 1;
   justify-self: left;
   white-space: nowrap;
+  overflow: visible;
 }
 
 .fusszeile-mitte,.kopfzeile-mitte{
@@ -217,6 +103,7 @@ html,body{
   justify-self: center;
   text-align: center;
   white-space: nowrap;
+  overflow: visible;
 }
 
 .fusszeile-rechts,.kopfzeile-rechts{
@@ -224,6 +111,7 @@ html,body{
   justify-self: rechts;
   text-align: right;
   white-space: nowrap;
+  overflow: visible;
 }
 
 .kopfzeile-links{
@@ -300,3 +188,38 @@ html,body{
 .auto-absatz{
   margin: 0.1em 0;
 }
+
+.abc{
+  display: grid;
+  row-gap: 0.5ex;
+  column-gap: 1ex;
+  margin-top: 0.5ex;
+  margin-bottom: 0.5ex;
+}
+
+.hessenkasten-aussen{
+  display: flex;
+
+}
+
+.hessenkasten{
+  border: 1pt solid black;
+  margin: auto;
+  display: inline-block;
+  padding: 0.5ex 1ex;
+}
+
+.daneben-rechts{
+  float: right;
+}
+
+.daneben-links{
+  float: left;
+}
+
+.zentriert{
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+

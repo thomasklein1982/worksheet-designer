@@ -4,10 +4,12 @@ import arbeitsblatt from "../ab-components/arbeitsblatt";
 import aufgabe from "../ab-components/aufgabe";
 import bild from "../ab-components/bild";
 import box from "../ab-components/box";
+import daneben from "../ab-components/daneben";
 import formel from "../ab-components/formel-not-used";
 import fragment from "../ab-components/fragment";
 import fusszeile from "../ab-components/fusszeile";
 import grafik from "../ab-components/grafik";
+import hessenkasten from "../ab-components/hessenkasten";
 import ifelse from "../ab-components/ifelse";
 import karopapier from "../ab-components/karopapier";
 import kopfzeile from "../ab-components/kopfzeile";
@@ -21,9 +23,10 @@ import seite from "../ab-components/seite";
 import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
 import weblink from "../ab-components/weblink";
+import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert
 };
 let IgnoreTags={
   "elseif": true, "else": true
@@ -319,6 +322,17 @@ export function parseNode(code,node,scope,forceTemplateRendering){
   return newCode;
 }
 
+export function getChildElements(elementNode){
+  if(elementNode.name!=="Element") throw "getChildElements: Das ist kein Element";
+  let child=elementNode.firstChild.nextSibling;
+  let children=[];
+  while(child){
+    if(child.name==="Element") children.push(child);
+    child=child.nextSibling;
+  }
+  return children;
+}
+
 function convertFreeLinesToParagraphs(text){
   let parts=[];
   let newlineCount=0;
@@ -347,7 +361,7 @@ function convertFreeLinesToParagraphs(text){
   parts.push(part);
   let code=parts[0];
   for(let i=1;i<parts.length;i++){
-    code+="\n<p class='auto-absatz'>"+parts[i]+"</p>";
+    code+="\n<p class='auto-absatz'></p>"+parts[i];
   }
   return code;
 }
