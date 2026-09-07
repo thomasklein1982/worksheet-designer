@@ -3,7 +3,7 @@
     <h1>Hilfe</h1>
     <h2>Einfügen</h2>
     <template v-for="(ins,i) in insertions">
-      <button @click="insert(ins.text)">{{ ins.label }}</button>
+      <button @click="toClipboard(ins.text)" v-html="ins.label"></button>
     </template>
     
   </div>
@@ -18,10 +18,11 @@ export default {
     return {
       show: false,
       insertions: [
-        {label: "Backslash", text: "\\"},
-        {label: "Bruch", text: "\\frac{}{}"},
-        {label: "abc", text: '<abc spalten="2">\n<box></box>\n<box></box>\n</abc>'},
-        {label: "formel", text: '<formel></formel>'}
+        {label: "\\", text: "\\"},
+        {label: "Bruch", text: "\\frac{1}{2}"},
+        {label: "abc", text: '<abc spalten="2">\n  <box></box>\n  <box></box>\n</abc>'},
+        {label: "formel", text: '<formel></formel>'},
+        {label: "&pm;", text: '\\pm'}
       ]
     }
   },
@@ -31,6 +32,9 @@ export default {
     },
     toggle(){
       this.show=!this.show;
+    },
+    toClipboard(text){
+      navigator.clipboard.writeText(text);
     },
     insert(text){
       this.$emit("insert",text);

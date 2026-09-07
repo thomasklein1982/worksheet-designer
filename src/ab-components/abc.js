@@ -42,7 +42,7 @@ export default {
 
     let gridTemplate="";
     gridTemplate+=`grid-template-columns: repeat(${spalten},1.3em 1fr);`;
-    gridTemplate+=`grid-template-rows: repeat(${zeilen},1fr);`;
+    gridTemplate+=`grid-template-rows: repeat(${zeilen},auto);`;
     gridTemplate+="grid-auto-flow: column;";
 
     let open=`<div ${pt} class="abc" style="${style};${gridTemplate}">`;

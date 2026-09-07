@@ -36,8 +36,8 @@ export default {
     if(minY===undefined)minY=g.minY;
     if(maxY===undefined)maxY=g.maxY;
     
-    let x=achse.create(0,0,1,0,minX,maxX,schrittX,"","");
-    let y=achse.create(0,0,0,1,minY,maxY,schrittY,"","");
+    let x=achse.create(0,0,1,0,minX,maxX,schrittX,"0","",scope);
+    let y=achse.create(0,0,0,1,minY,maxY,schrittY,"0","",scope);
     let open=`<g ${pt}>`+x.open+x.close+y.open+y.close+"</g>";
     let close="";
     return {open,close};

@@ -26,7 +26,7 @@ import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt
 };
 let IgnoreTags={
   "elseif": true, "else": true

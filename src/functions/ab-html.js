@@ -2,7 +2,7 @@ import {html} from "@codemirror/lang-html"
 
 const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer","hessenkasten","daneben","zentriert"];
 const topTags=["fusszeile","kopfzeile","seite"];
-const graphicTags=["karopapier","kreis","ksystem"];
+const graphicTags=["karopapier","kreis","ksystem","text"];
 
 const abHtml=html({
   selfClosingTags: true,
@@ -135,7 +135,19 @@ const abHtml=html({
     zentriert: {
       globalAttrs: false,
       children: textTags
-    }
+    },
+    punkt: {
+      attrs: {
+        x: ["0"],
+        y: ["0"],
+        form: [".","x"],
+        pos: ["n","s","w","o","nw","no","sw","so"],
+        winkel: ["0","90","180","270"],
+        farbe: ["black","red","blue","green"]
+      },
+      globalAttrs: false,
+      children: null
+    },
   }
 });
 

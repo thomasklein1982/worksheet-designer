@@ -42,7 +42,7 @@ export default{
     let width=sizeX*zoomX;
     let height=sizeY*zoomY;
     let viewBox="0 0 "+width+" "+height;
-    let transformation="matrix("+(1)+",0,0,"+(-1)+","+(-minX+rahmen)+","+(maxY+rahmen)+")";
+    let transformation="matrix("+(1)+",0,0,"+(-1)+","+(-minX+rahmen)*zoomX+","+(maxY+rahmen)*zoomY+")";
     let code=`<div class="grafik" style="display: inline-block; position:relative; width: ${width}cm; height: ${height}cm;${style}" ${pt}>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: hidden;" viewBox="${viewBox}">
   <defs>
@@ -57,7 +57,7 @@ export default{
   <g transform="${transformation}" style="stroke: black; fill: none; stroke-width: 0.06">
     `;
     setInScope(scope,"grafik",{
-      minX,maxX,minY,maxY,zoomX,zoomY,width,height,rahmen
+      minX,maxX,minY,maxY,zoomX,zoomY,width,height,rahmen, sizeX, sizeY
     });
     return {
       open: code,

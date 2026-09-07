@@ -211,10 +211,12 @@ html,body{
 
 .daneben-rechts{
   float: right;
+  margin-left: 0.5ex; 
 }
 
 .daneben-links{
   float: left;
+  margin-right: 0.5ex;
 }
 
 .zentriert{

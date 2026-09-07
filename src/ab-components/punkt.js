@@ -10,35 +10,59 @@ export default {
       type: Number,
       default: 0
     },
-    "form": {
+    "form": String,
+    pos: String,
+    farbe: {
+      type: "String",
+      default: "black"
+    },
+    groesse: {
       type: String,
-      default: "x"
-    },
-    text: String,
-    abstand: {
-      type: Number,
-      default: "0.5cm"
-    },
-    winkel: {
-      type: Number,
-      default: 270
+      default: "0.5pt"
     }
   },
-  create(x,y,form,text,abstand,winkel,pt,scope){
-    let open=`<g class="punkt" ${pt} fill="black" stroke="none" >`;
+  create(x,y,form,pos,farbe,groesse,pt,scope){
+    let g=getFromScope(scope,"grafik");
+    x*=g.zoomX;
+    y*=g.zoomY;
+    let transformText=`matrix(1,0,0,-1,0,0)`;
+    let transformGroup=`matrix(1,0,0,1,${x},${y})`;
+    let open=`<g class="punkt" transform="${transformGroup}" ${pt}>`;
     if(form==="."){
-      open+=`<circle  cx="${x}" cy="${y}" r="0.1" ></circle>`;
+      open+=`<circle stroke="${farbe}" cx="${x}" cy="${y}" r="0.1" ></circle>`;
     }else if(form==="x"){
-      open+=`<g><line x1="${x-0.1}" y1="${y-0.1}" x2="${x+0.1}" y2="${y+0.1}"/><line x1="${x-0.1}" y1="${y+0.1}" x2="${x+0.1}" y2="${y-0.1}"/></g>`
+      let size=0.15;
+      open+=`<line stroke="${farbe}" x1="${-size}" y1="${-size}" x2="${size}" y2="${size}"/><line stroke="${farbe}" x1="${-size}" y1="${size}" x2="${size}" y2="${-size}"/>`
     }
-    if(text){
-
+    let dx=0; let dy=0;
+    let baseline="middle";
+    let anchor="middle";
+    if(pos!==undefined){
+      pos=pos.toLowerCase();
+      let dist=0.2;
+      if(pos.indexOf("n")>=0){
+        dy=-dist;
+        baseline="";
+      }
+      if(pos.indexOf("s")>=0){
+        dy=dist;
+        baseline="hanging";
+      }
+      if(pos.indexOf("w")>=0){
+        dx=-dist;
+        anchor="end";
+      }
+      if(pos.indexOf("o")>=0){
+        dx=dist;
+        anchor="start";
+      }
     }
-    let close="</g>";
+    open+=`<text transform="${transformText}" stroke="none" fill="${farbe}" dominant-baseline="${baseline}" text-anchor="${anchor}" font-size="${groesse}" x="0" y="0" dx="${dx}" dy="${dy}">`;
+    let close="</text></g>";
     return {open,close};
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props.x,props.y,props.form,props.text,props.abstand,props.winkel,pt,scope);
+    return this.create(props.x,props.y,props.form,props.pos,props.farbe,props.groesse,pt,scope);
   }
 }
