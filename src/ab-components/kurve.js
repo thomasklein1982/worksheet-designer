@@ -18,6 +18,7 @@ export default {
   },
   create(x,kruemmung,farbe,punkte,content,pt,scope){
     let open,close;
+    let g=getFromScope(scope,"grafik");
     content=content.toLowerCase().trim().split("\n");
     let points=[];
     let regexp=/^(p|ep|wp)\s+([^,]+),\s*(\S+)\s*$/;
@@ -38,6 +39,9 @@ export default {
     //determine slope and control point before:
     let last=null;
     let pointCode="";
+    points=points.sort((a,b)=>{
+      return a.x-b.x;
+    });
     
     for(let i=0;i<points.length;i++){
       let p=points[i];
@@ -124,12 +128,12 @@ export default {
     }
     console.log(points);
     let p=points[0];
-    let path=`M ${p.x} ${p.y}`;
+    let path=`M ${p.x*g.zoomX} ${p.y*g.zoomY}`;
     
     last=p;
     for(let i=1;i<points.length;i++){
       let p=points[i];
-      path+=`S ${p.cp.x} ${p.cp.y}, ${p.x} ${p.y}`;
+      path+=`S ${p.cp.x*g.zoomX} ${p.cp.y*g.zoomY}, ${p.x*g.zoomX} ${p.y*g.zoomY}`;
     }
     open=`${pointCode} <path stroke="${farbe}" d="${path}" ${pt}>`;
     close="</path>";

@@ -44,7 +44,8 @@ export default{
   },
   data(){
     return {
-      editor: null
+      editor: null,
+      tree: null
     }
   },
   mounted(){
@@ -64,6 +65,7 @@ export default{
             let code=this.getText();
             if(this.syncAttribute==="html"){
               let tree=update.state.tree;
+              this.tree=tree;
               this.syncObject.realHtml=createFullHtmlCode(this.$root.getCurrentAB(),code,tree);
             }
             this.syncObject[this.syncAttribute]=code;

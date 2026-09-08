@@ -6,7 +6,7 @@
     <button @click="close()" :disabled="!isABOpen">Schließen</button>
     <button @click="$emit('save-as-fragment')" :disabled="!isABOpen">Als Fragment speichern</button>
     <button @click="$emit('rename')" :disabled="!isABOpen">Umbenennen</button>
-    <button @click="$emit('prettify')">Formatieren</button>
+    <!-- <button @click="$emit('prettify')">Formatieren</button> -->
     <button @click="$emit('print')" :disabled="!isABOpen">Drucken</button>
     <button @click="$emit('export')" :disabled="!isABOpen">Exportieren</button>
     <button @click="$emit('assets')" :disabled="!isABOpen">Assets</button>

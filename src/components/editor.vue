@@ -12,6 +12,7 @@
       @close="closeAB(currentABIndex)"
       @fragments="$refs.fragmentManager.open()"
       @help="$refs.help.toggle()"
+      @prettify="prettifyAB()"
     />
     <Tabs :abs="abs" :selected-index="currentABIndex" @change-tab="selectAB"/>
     <div class="flex-1" style="position: relative; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden">
@@ -50,6 +51,8 @@ import AssetsManager from './assets-manager.vue';
 import NewAb from './new-ab.vue';
 import FragmentManager from './fragment-manager.vue';
 import Help from './help.vue';
+import { prettifyHtml } from '../functions/prettify-html.js';
+
 
 export default{
   components: {
@@ -71,6 +74,16 @@ export default{
     }
   },  
   methods: {
+    prettifyAB(){
+      let cm=this.$refs.codemirrorEditor[this.currentABIndex];
+      let code=cm.getText();
+      let formatted=prettifyHtml(code,cm.tree);
+      this.currentAB.html=formatted;
+      nextTick(()=>{
+        cm.updateText();
+        this.updatePreview();
+      })
+    },
     insert(text){
       let cm=this.$refs.codemirrorEditor[this.currentABIndex];
       cm.insert(text);
