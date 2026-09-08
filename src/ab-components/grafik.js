@@ -3,22 +3,8 @@ import karopapier from "./karopapier";
 
 export default{
   props: {
-    "min-x": {
-      type: Number,
-      default: 0
-    },
-    "max-x": {
-      type: Number,
-      default: 10
-    },
-    "min-y": {
-      type: Number,
-      default: 0
-    },
-    "max-y": {
-      type: Number,
-      default: 10
-    },
+    x: String,
+    y: String,
     "style": {
       type: String,
       default: ""
@@ -66,6 +52,22 @@ export default{
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props["min-x"],props["max-x"],props["min-y"],props["max-y"],props["style"], props["zoom-x"], props["zoom-y"],props["rahmen"], pt,scope);
+    let x=props.x;
+    let y=props.y;
+    let minX=-2;
+    let maxX=2;
+    let minY=-2;
+    let maxY=2;
+    if(x){
+      x=x.split(":");
+      minX=x[0]*1;
+      maxX=x[1]*1;
+    }
+    if(y){
+      y=y.split(":");
+      minY=y[0]*1;
+      maxY=y[1]*1;
+    }
+    return this.create(minX,maxX,minY,maxY,props["style"], props["zoom-x"], props["zoom-y"],props["rahmen"], pt,scope);
   }
 }

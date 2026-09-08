@@ -22,7 +22,9 @@ export default {
         {label: "Bruch", text: "\\frac{1}{2}"},
         {label: "abc", text: '<abc spalten="2">\n  <box></box>\n  <box></box>\n</abc>'},
         {label: "formel", text: '<formel></formel>'},
-        {label: "&pm;", text: '\\pm'}
+        {label: "&pm;", text: '\\pm'},
+        {label: "Grafik", text: '<grafik x="-2.3:5.3" y="-3:4">\n  <karopapier/>\n  <ksystem/>\n  \n</grafik>'},
+        {label: "Kurve", text: '<kurve punkte="red" kruemmung="1">\n  p -3.1, 6\n  ep 1, 1\n  wp 4, 3\n  ep 7,6\n  p 8,-10\n</kurve>'}
       ]
     }
   },

@@ -2,7 +2,7 @@ import {html} from "@codemirror/lang-html"
 
 const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer","hessenkasten","daneben","zentriert"];
 const topTags=["fusszeile","kopfzeile","seite"];
-const graphicTags=["karopapier","kreis","ksystem","text"];
+const graphicTags=["karopapier","kreis","ksystem","text","kurve"];
 
 const abHtml=html({
   selfClosingTags: true,
@@ -48,10 +48,8 @@ const abHtml=html({
     },
     "grafik": {
       attrs: {
-        "min-x": ["0"],
-        "max-x": ["10"],
-        "min-y": ["0"],
-        "max-y": ["10"],
+        x: ["-2.5:5.5"],
+        y: ["-3.5:6.5"],
         "zoom-x": ["1"],
         "zoom-y": ["1"]
       },
@@ -143,7 +141,17 @@ const abHtml=html({
         form: [".","x"],
         pos: ["n","s","w","o","nw","no","sw","so"],
         winkel: ["0","90","180","270"],
-        farbe: ["black","red","blue","green"]
+        farbe: ["black","red","blue","green"],
+        groesse: ["0.25pt", "0.5pt", "1pt","2pt"]
+      },
+      globalAttrs: false,
+      children: null
+    },
+    kurve: {
+      attrs: {
+        x: ["-3:6"],
+        farbe: ["black","red","blue","green"],
+        punkte: ["black","red","blue","green"],
       },
       globalAttrs: false,
       children: null

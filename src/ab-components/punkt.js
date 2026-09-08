@@ -29,9 +29,9 @@ export default {
     let transformGroup=`matrix(1,0,0,1,${x},${y})`;
     let open=`<g class="punkt" transform="${transformGroup}" ${pt}>`;
     if(form==="."){
-      open+=`<circle stroke="${farbe}" cx="${x}" cy="${y}" r="0.1" ></circle>`;
+      open+=`<circle fill="${farbe}" cx="0" cy="0" r="0.1" ></circle>`;
     }else if(form==="x"){
-      let size=0.15;
+      let size=0.11;
       open+=`<line stroke="${farbe}" x1="${-size}" y1="${-size}" x2="${size}" y2="${size}"/><line stroke="${farbe}" x1="${-size}" y1="${size}" x2="${size}" y2="${-size}"/>`
     }
     let dx=0; let dy=0;
@@ -39,21 +39,20 @@ export default {
     let anchor="middle";
     if(pos!==undefined){
       pos=pos.toLowerCase();
-      let dist=0.2;
+      let distX=0.2;
+      let dist=0.5;
       if(pos.indexOf("n")>=0){
         dy=-dist;
-        baseline="";
       }
       if(pos.indexOf("s")>=0){
         dy=dist;
-        baseline="hanging";
       }
       if(pos.indexOf("w")>=0){
-        dx=-dist;
+        dx=-distX;
         anchor="end";
       }
       if(pos.indexOf("o")>=0){
-        dx=dist;
+        dx=distX;
         anchor="start";
       }
     }

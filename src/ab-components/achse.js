@@ -69,8 +69,8 @@ export default {
         let pos;
         if(dx!==0 && dy===0) pos="s";
         if(dx===0 && dy>0) pos="w";
-        if(dx===0 && dy<0) pos="e";
-        let p=punkt.create(rx+ox*2,ry-oy*2,pos,undefined,"black","0.25pt","",scope);
+        if(dx===0 && dy<0) pos="o";
+        let p=punkt.create(rx+ox*1,ry-oy*1,undefined,pos,"black","0.3pt","",scope);
         open+=p.open+start+p.close;
       }
       start+=schritt;

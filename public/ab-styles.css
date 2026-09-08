@@ -34,7 +34,7 @@ html,body{
 }
 
 .karopapier{
-  stroke: gray; 
+  stroke: rgba(140,140,140); 
   stroke-width: 0.04;
 }
 
