@@ -1,4 +1,5 @@
 import { getFromScope, setInScope, getPropsPT } from "../functions/createHtmlCode";
+import pfeil from "./pfeil";
 import punkt from "./punkt";
 
 export default {
@@ -35,6 +36,7 @@ export default {
   },
   create(x,y,dx,dy,min,max,schritt,verbergen,pt,scope){
     let grafik=getFromScope(scope,"grafik");
+    let p=pfeil.create(x+min*dx,y+min*dy,x+max*dx,y+max*dy,"dreieck","",scope);
     x*=grafik.zoomX;
     y*=grafik.zoomY;
     let ox=-dy*0.15;
@@ -45,9 +47,10 @@ export default {
     let sy=y+min*rdy;
     let ex=x+max*rdx;
     let ey=y+max*rdy;
-    let open=`<g ${pt}><line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}"></line>`;
-    let start=Math.ceil(min*schritt)/schritt;
-    let end=Math.floor(max*schritt)/schritt;
+    let open=`<g ${pt}>`+p.open+p.close;
+    //<line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}"></line>`;
+    let start=Math.ceil(min/schritt)*schritt;
+    let end=Math.floor(max/schritt)*schritt;
     if(verbergen){
       verbergen=verbergen.split(",");
     }

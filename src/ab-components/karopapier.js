@@ -3,44 +3,56 @@ import { setInScope,getFromScope, getPropsPT } from "../functions/createHtmlCode
 export default {
   props: {
     "x": {
-      type: Number,
-      default: undefined
+      type: String,
+      default: "auto"
     },
     "y": {
-      type: Number,
-      default: 0
+      type: String,
+      default: "auto"
     },
-    "breite": {
-      type: Number,
-      default: 1
-    },
-    "hoehe": {
-      type: Number,
-      default: 1
-    }
+    breite: Number,
+    hoehe: Number
+
   },
-  create(sx,sy,b,h,pt,scope){
+  create(x,y,breite,hoehe,pt,scope){
     let g=getFromScope(scope,"grafik");
     let open="<g class='karopapier' "+pt+" >";
-    if(sx===undefined){
-      sx=Math.floor((g.minX-g.rahmen)*2)/2;
-      sy=Math.floor((g.minY-g.rahmen)*2)/2;
-      b=Math.ceil(g.sizeX);
-      h=Math.ceil(g.sizeY);
+    if(!x || x===true) x="auto";
+    if(!y || y===true) y="auto";
+    if(!breite) breite=0.5/g.zoomX;
+    if(!hoehe) hoehe=0.5/g.zoomY;
+    let minX, maxX, minY, maxY;
+    if(x==="auto"){
+      minX=g.minX;
+      maxX=g.maxX;
+    }else{
+      let parts=x.split(":");
+      minX=parts[0]*1;
+      maxX=parts[1]*1;
     }
-    sx*=g.zoomX;
-    sy*=g.zoomY;
-    // b*=g.zoomX;
-    // h*=g.zoomY;
-    let x=sx;
-    for(let i=0;i<=b*2;i++){
-      open+=`<line x1="${x}" y1="${sy}" x2="${x}" y2="${sy+h*g.zoomY}" />`;
-      x+=0.5*g.zoomX;
+    if(y==="auto"){
+      minY=g.minY;
+      maxY=g.maxY;
+    }else{
+      let parts=y.split(":");
+      minY=parts[0]*1;
+      maxY=parts[1]*1;
     }
-    let y=sy;
-    for(let i=0;i<=h*2;i++){
-      open+=`<line x1="${sx}" y1="${y}" x2="${sx+b*g.zoomX}" y2="${y}" />`;
-      y+=0.5*g.zoomY;
+
+    let sx=Math.ceil(minX/breite)*breite;
+    let ex=Math.floor(maxX/breite)*breite;
+    let sy=Math.floor(minY/hoehe)*hoehe;
+    let ey=Math.floor(maxY/hoehe)*hoehe;
+
+    x=sx;
+    while(x<=ex){
+      open+=`<line x1="${x*g.zoomX}" y1="${sy*g.zoomY}" x2="${x*g.zoomX}" y2="${ey*g.zoomY}" />`;
+      x+=breite;
+    }
+    y=sy;
+    while(y<=ey){
+      open+=`<line y1="${y*g.zoomY}" x1="${sx*g.zoomX}" y2="${y*g.zoomY}" x2="${ex*g.zoomX}" />`;
+      y+=hoehe;
     }
     let close="</g>";
     return {open,close};

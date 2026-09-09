@@ -3,47 +3,39 @@ import { setInScope,getFromScope, getPropsPT } from "../functions/createHtmlCode
 
 export default {
   props: {
-    "min-x": {
-      type: Number,
-      default: undefined
-    },
-    "max-x": {
-      type: Number,
-      default: undefined
-    },
-    "min-y": {
-      type: Number,
-      default: undefined
-    },
-    "max-y": {
-      type: Number,
-      default: undefined
-    },
-    "schritt-x": {
-      type: Number,
-      default: 1
-    },
-    "schritt-y": {
-      type: Number,
-      default: 1
-    },
+    x: String,
+    y: String
   },
-  create(minX,maxX,minY,maxY,schrittX,schrittY,pt,scope){
+  create(x,y,pt,scope){
     let g=getFromScope(scope,"grafik");
-
-    if(minX===undefined)minX=g.minX;
-    if(maxX===undefined)maxX=g.maxX;
-    if(minY===undefined)minY=g.minY;
-    if(maxY===undefined)maxY=g.maxY;
+    let minX, maxX, schrittX=1, minY, maxY, schrittY=1;
+    if(x){
+      let parts=x.split(":");
+      minX=parts[0]*1;
+      maxX=parts[1]*1;
+      if(parts.length===3) schrittX=parts[2]*1;
+    }else{
+      minX=g.minX;
+      maxX=g.maxX;
+    }
+    if(y){
+      let parts=y.split(":");
+      minY=parts[0]*1;
+      maxY=parts[1]*1;
+      if(parts.length===3) schrittY=parts[2]*1;
+    }else{
+      minY=g.minY;
+      maxY=g.maxY;
+    }
     
-    let x=achse.create(0,0,1,0,minX,maxX,schrittX,"0","",scope);
-    let y=achse.create(0,0,0,1,minY,maxY,schrittY,"0","",scope);
-    let open=`<g ${pt}>`+x.open+x.close+y.open+y.close+"</g>";
+    let xa=achse.create(0,0,1,0,minX,maxX,schrittX,"0","",scope);
+    let ya=achse.create(0,0,0,1,minY,maxY,schrittY,"0","",scope);
+    let open=`<g ${pt}>`+xa.open+xa.close+ya.open+ya.close+"</g>";
     let close="";
     return {open,close};
   },
   createFromHtml(node,nodeCode,scope){
     let {props,pt}=getPropsPT(node,nodeCode,this.props,scope);
-    return this.create(props["min-x"],props["max-x"],props["min-y"],props["max-y"],props["schritt-x"],props["schritt-y"],pt,scope);
+    return this.create(props.x,props.y,pt,scope);
   }
 }

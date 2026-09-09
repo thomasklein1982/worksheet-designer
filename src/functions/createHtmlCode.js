@@ -18,6 +18,7 @@ import ksystem from "../ab-components/ksystem";
 import kurve from "../ab-components/kurve";
 import loop from "../ab-components/loop";
 import matheTrainer from "../ab-components/mathe-trainer";
+import pfeil from "../ab-components/pfeil";
 import punkt from "../ab-components/punkt";
 import punkte from "../ab-components/punkte";
 import seite from "../ab-components/seite";
@@ -27,7 +28,7 @@ import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil
 };
 let IgnoreTags={
   "elseif": true, "else": true
