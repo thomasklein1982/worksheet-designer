@@ -184,7 +184,6 @@ html,body{
   width: 100%;
   border-top: 1pt solid black;
   border-bottom: 1pt solid black;
-  border-collapse: collapse;
   text-align: left;
 }
 
@@ -192,6 +191,38 @@ html,body{
   width: 1%;
   padding-right: 1em;
   white-space: nowrap;
+}
+
+table{
+  border-collapse: collapse;
+}
+
+.punktspiegel{
+  text-align: center;
+}
+
+.punktspiegel th, .notenspiegel th{
+  min-width: 1.5em;
+}
+
+.randlos th, .randlos td{
+  border: 1pt solid black;
+}
+
+.randlos tr:first-child th, .randlos tr:first-child td{
+  border-top: none;
+}
+
+.randlos tr:last-child th, .randlos tr:last-child td{
+  border-bottom: none;
+}
+
+.randlos td:first-child, .randlos th:first-child{
+  border-left: none;
+}
+
+.randlos td:last-child, .randlos th:last-child{
+  border-right: none;
 }
 
 .punkte{

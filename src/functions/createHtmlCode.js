@@ -18,9 +18,11 @@ import ksystem from "../ab-components/ksystem";
 import kurve from "../ab-components/kurve";
 import loop from "../ab-components/loop";
 import matheTrainer from "../ab-components/mathe-trainer";
+import notenspiegel from "../ab-components/notenspiegel";
 import pfeil from "../ab-components/pfeil";
 import punkt from "../ab-components/punkt";
 import punkte from "../ab-components/punkte";
+import punktspiegel from "../ab-components/punktspiegel";
 import seite from "../ab-components/seite";
 import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
@@ -29,7 +31,7 @@ import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur, punktspiegel, notenspiegel
 };
 let IgnoreTags={
   "elseif": true, "else": true

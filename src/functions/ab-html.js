@@ -1,6 +1,6 @@
 import {html} from "@codemirror/lang-html"
 
-const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer","hessenkasten","daneben","zentriert", "titel-klausur"];
+const textTags=["div","abc","abstand","bild","box","grafik","formel","titel","mathe-trainer","hessenkasten","daneben","zentriert", "titel-klausur","punktspiegel","notenspiegel","punkte"];
 const topTags=["fusszeile","kopfzeile","seite"];
 const graphicTags=["karopapier","kreis","ksystem","text","kurve","pfeil"];
 
@@ -104,7 +104,24 @@ const abHtml=html({
       children: textTags
     },
     titel: {
-
+      attrs: {
+        groesse: ["1","2","3","4"]
+      },
+      globalAttrs: false,
+      children: textTags
+    },
+    punktspiegel: {
+      globalAttrs: false
+    },
+    notenspiegel: {
+      globalAttrs: false
+    },
+    punkte: {
+      attrs: {
+        
+      },
+      globalAttrs: false,
+      children: null
     },
     "titel-klausur": {
       attrs: {
