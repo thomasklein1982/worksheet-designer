@@ -5,7 +5,6 @@ import punkt from "./punkt";
 
 export default {
   props: {
-    x: String,
     kruemmung: {
       type: Number,
       default: 1
@@ -16,7 +15,7 @@ export default {
     },
     punkte: String
   },
-  create(x,kruemmung,farbe,punkte,content,pt,scope){
+  create(kruemmung,farbe,punkte,content,pt,scope){
     let open,close;
     let g=getFromScope(scope,"grafik");
     content=content.toLowerCase().trim().split("\n");
@@ -142,6 +141,6 @@ export default {
   createFromHtml(node,code,scope){
     let {props,pt}=getPropsPT(node,code,this.props,scope);
     let content=getTagContentAsString(node,code);
-    return this.create(props.x,props.kruemmung,props.farbe,props.punkte,content,pt,scope);
+    return this.create(props.kruemmung,props.farbe,props.punkte,content,pt,scope);
   }
 }

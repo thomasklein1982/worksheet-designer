@@ -172,6 +172,28 @@ html,body{
   text-align: center;
 }
 
+.titel-klausur{
+  margin-bottom: 1ex;
+}
+
+.titel-klausur-titel{
+  text-align: center;
+}
+
+.titel-klausur-tabelle{
+  width: 100%;
+  border-top: 1pt solid black;
+  border-bottom: 1pt solid black;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.titel-klausur-tabelle th{
+  width: 1%;
+  padding-right: 1em;
+  white-space: nowrap;
+}
+
 .punkte{
   float: right;
   transform: translate(120%,-0.2rem);

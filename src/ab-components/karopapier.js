@@ -19,8 +19,8 @@ export default {
     let open="<g class='karopapier' "+pt+" >";
     if(!x || x===true) x="auto";
     if(!y || y===true) y="auto";
-    if(!breite) breite=0.5/g.zoomX;
-    if(!hoehe) hoehe=0.5/g.zoomY;
+    if(!breite) breite=0.5;
+    if(!hoehe) hoehe=0.5;
     let minX, maxX, minY, maxY;
     if(x==="auto"){
       minX=g.minX;

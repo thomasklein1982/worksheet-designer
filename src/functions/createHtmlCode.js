@@ -24,11 +24,12 @@ import punkte from "../ab-components/punkte";
 import seite from "../ab-components/seite";
 import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
+import titelKlausur from "../ab-components/titel-klausur";
 import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur
 };
 let IgnoreTags={
   "elseif": true, "else": true
