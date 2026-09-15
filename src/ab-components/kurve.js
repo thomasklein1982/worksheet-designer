@@ -48,7 +48,7 @@ export default {
       if(last){
         dx1=p.x-last.x;
       }
-      if(p.type==="p"){
+      if(p.type==="p" || p.type==="wp"){
         let next=i<points.length-1? points[i+1]: null;
         let s1=0; let s2=0;
         let s=0;
@@ -104,16 +104,28 @@ export default {
         next=points[i+1];
       }
       if(p.type==="wp"){
-        if(ds<0){
-          //ReLi:
-          p.s=last.s;
-          if(next && next.s<p.s) p.s=next.s;
-          p.s-=kruemmung;
+        let s1=last.s;
+        let s2=next.s;
+        let lire=true;
+        if(Math.abs(ds)<0.01){
+          lire=last.y<next.y;
         }else{
-          //LiRe:
-          p.s=last.s;
-          if(next && next.s>p.s) p.s=next.s;
-          p.s+=kruemmung;
+          lire=ds>0;
+        }
+        if(lire){
+          //LiRe: //p.s > last.s und next.s, aber darf nicht vorzeichen ändern
+          if(p.s>0){
+            p.s=Math.max(p.s,s1,s2)*(kruemmung+1);
+          }else if(p.s<0){
+            p.s=Math.max(p.s,s1,s2)/(kruemmung+1);
+          }
+        }else{
+          //ReLi: // p.s < last.s und next.s, aber darf nicht Vorzeichen ändern
+          if(p.s>0){
+            p.s=Math.min(p.s,s1,s2)/(kruemmung+1);
+          }else if(p.s<0){
+            p.s=Math.min(p.s,s1,s2)*(kruemmung+1);
+          }
         }
       }
       ds=p.s-last.s;

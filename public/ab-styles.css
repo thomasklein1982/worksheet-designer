@@ -51,8 +51,8 @@ html,body{
 
 .papier{
   break-after: page;
-  break-before: page;
   break-inside: avoid;
+  page-break-inside: avoid;
   display: flex;
   flex-direction: column;
   height: 100svh;
