@@ -19,8 +19,12 @@ export default {
     let open="<g class='karopapier' "+pt+" >";
     if(!x || x===true) x="auto";
     if(!y || y===true) y="auto";
+    let zX=g.zoomX;
+    let zY=g.zoomY;
     if(!breite) breite=0.5;
     if(!hoehe) hoehe=0.5;
+    let bX=breite;
+    let bY=breite*zX/zY;
     let minX, maxX, minY, maxY;
     if(x==="auto"){
       minX=g.minX;
@@ -39,20 +43,20 @@ export default {
       maxY=parts[1]*1;
     }
 
-    let sx=Math.ceil(minX/breite)*breite;
-    let ex=Math.floor(maxX/breite)*breite;
-    let sy=Math.floor(minY/hoehe)*hoehe;
-    let ey=Math.floor(maxY/hoehe)*hoehe;
+    let sx=Math.ceil(minX/bX)*bX;
+    let ex=Math.floor(maxX/bX)*bX;
+    let sy=Math.floor(minY/bY)*bY;
+    let ey=Math.floor(maxY/bY)*bY;
 
     x=sx;
     while(x<=ex){
       open+=`<line x1="${x*g.zoomX}" y1="${sy*g.zoomY}" x2="${x*g.zoomX}" y2="${ey*g.zoomY}" />`;
-      x+=breite;
+      x+=bX;
     }
     y=sy;
     while(y<=ey){
       open+=`<line y1="${y*g.zoomY}" x1="${sx*g.zoomX}" y2="${y*g.zoomY}" x2="${ex*g.zoomX}" />`;
-      y+=hoehe;
+      y+=bY;
     }
     let close="</g>";
     return {open,close};
