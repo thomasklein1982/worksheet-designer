@@ -31,16 +31,16 @@ export default {
       maxX=g.maxX;
     }else{
       let parts=x.split(":");
-      minX=parts[0]*1;
-      maxX=parts[1]*1;
+      minX=parts[0]==="auto"? g.minX : parts[0]*1;
+      maxX=parts[1]==="auto"? g.maxX : parts[1]*1;
     }
     if(y==="auto"){
       minY=g.minY;
       maxY=g.maxY;
     }else{
       let parts=y.split(":");
-      minY=parts[0]*1;
-      maxY=parts[1]*1;
+      minY=parts[0]==="auto"? g.minY : parts[0]*1;
+      maxY=parts[1]==="auto"? g.maxY : parts[1]*1;
     }
 
     let sx=Math.ceil(minX/bX)*bX;

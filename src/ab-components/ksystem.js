@@ -11,8 +11,8 @@ export default {
     let minX, maxX, schrittX=1, minY, maxY, schrittY=1;
     if(x){
       let parts=x.split(":");
-      minX=parts[0]*1;
-      maxX=parts[1]*1;
+      minX=parts[0]==="auto"? g.minX : parts[0]*1;
+      maxX=parts[1]==="auto"? g.maxX : parts[1]*1;
       if(parts.length===3) schrittX=parts[2]*1;
     }else{
       minX=g.minX;
@@ -20,8 +20,8 @@ export default {
     }
     if(y){
       let parts=y.split(":");
-      minY=parts[0]*1;
-      maxY=parts[1]*1;
+      minY=parts[0]==="auto"? g.minY : parts[0]*1;
+      maxY=parts[1]==="auto"? g.maxY : parts[1]*1;
       if(parts.length===3) schrittY=parts[2]*1;
     }else{
       minY=g.minY;
