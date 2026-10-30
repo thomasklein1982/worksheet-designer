@@ -1,5 +1,6 @@
 import abc from "../ab-components/abc";
 import abstand from "../ab-components/abstand";
+import achse from "../ab-components/achse";
 import arbeitsblatt from "../ab-components/arbeitsblatt";
 import aufgabe from "../ab-components/aufgabe";
 import bild from "../ab-components/bild";
@@ -16,6 +17,7 @@ import kopfzeile from "../ab-components/kopfzeile";
 import kreis from "../ab-components/kreis";
 import ksystem from "../ab-components/ksystem";
 import kurve from "../ab-components/kurve";
+import linien from "../ab-components/linien";
 import loop from "../ab-components/loop";
 import matheTrainer from "../ab-components/mathe-trainer";
 import notenspiegel from "../ab-components/notenspiegel";
@@ -23,6 +25,7 @@ import pfeil from "../ab-components/pfeil";
 import punkt from "../ab-components/punkt";
 import punkte from "../ab-components/punkte";
 import punktspiegel from "../ab-components/punktspiegel";
+import rechts from "../ab-components/rechts";
 import seite from "../ab-components/seite";
 import setup from "../ab-components/setup";
 import titel from "../ab-components/titel";
@@ -31,7 +34,7 @@ import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur, punktspiegel, notenspiegel
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur, punktspiegel, notenspiegel, achse, linien, rechts
 };
 let IgnoreTags={
   "elseif": true, "else": true
@@ -219,8 +222,14 @@ export function parseNode(code,node,scope,forceTemplateRendering){
         let c=code.substring(s.from,s.to);
         console.log("script",c);
         c="let scope=window.scope; let $=window.$;\n"+c;
-        eval(c);
-        tagCode="<script>\n"+c+"\n</script>";
+        try{
+          let func=new Function(window.additionalJSCode+"\n"+c);
+          func();
+          tagCode="<script>\n"+c+"\n</script>";
+        }catch(e){
+          console.log("error script",e,c);
+          tagCode="";
+        }
       }
       newCode+=tagCode;
     }else if(name in SpecialTags){
@@ -435,7 +444,7 @@ export function interpolateText(text,scope){
       it=replaceScopeVariables(it,scope);
       try{
         let val=runCodeWithScope(it);
-        newText+=JSON.stringify(val);
+        newText+=val;
       }catch(e){
         newText+="<span id='interpolate-"+scope.interpolates.length+"'></span>";
         scope.interpolates.push(it);

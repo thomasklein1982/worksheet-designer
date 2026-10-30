@@ -31,6 +31,8 @@ async function fetchFiles(){
   window.additionalCode+="<style>\n"+await f.text()+"\n</style>";
   f=await fetch("./ab-styles.css");
   window.additionalCode+="<style>\n"+await f.text()+"\n</style>";
+  f=await fetch("./javascript.js");
+  window.additionalJSCode=await f.text();
 }
 
 setTimeout(fetchFiles,100);

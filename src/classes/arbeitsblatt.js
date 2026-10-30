@@ -90,6 +90,7 @@ export default class Arbeitsblatt{
     
   </head>
   <body>
+  <script>${window.additionalJSCode}</script>
   ${code}
   </body>
 </html>`;

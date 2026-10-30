@@ -6,7 +6,7 @@ export default {
   props: {
     "x": {
       type: Number,
-      default: undefined
+      default: 0
     },
     "y": {
       type: Number,
