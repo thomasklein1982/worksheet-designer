@@ -10,9 +10,13 @@ export default {
     style: {
       type: String,
       default: ""
+    },
+    horizontal: {
+      type: Boolean,
+      default: false
     }
   },
-  create(anzahlItems,spalten, zeichen, style, pt,scope){
+  create(anzahlItems,spalten, zeichen, horizontal, style, pt,scope){
     if(!spalten) spalten=1;
     let zeilen=Math.ceil(anzahlItems/spalten);
     
@@ -43,19 +47,28 @@ export default {
     let gridTemplate="";
     gridTemplate+=`grid-template-columns: repeat(${spalten},1.3em 1fr);`;
     gridTemplate+=`grid-template-rows: repeat(${zeilen},auto);`;
-    gridTemplate+="grid-auto-flow: column;";
-
+    if(!horizontal){
+      gridTemplate+="grid-auto-flow: column;";
+    }
     let open=`<div ${pt} class="abc" style="${style};${gridTemplate}">`;
     for(let i=1;i<=zeilen*spalten;i++){
-      let c=Math.ceil(i/zeilen)*2-1;
-      let r=(i-1)%zeilen+1;
+      let c,r;
+      c=Math.ceil(i/zeilen)*2-1;
+      r=(i-1)%zeilen+1;
+      let index;
+      if(horizontal){
+        index=(r-1)*spalten+(c-1)/2;
+      }else{
+        index=i-1;
+      }
+      console.log(r,c,index)
       let z;
-      if(i>anzahlItems) z="";
+      if(index>anzahlItems) z="";
       else{
         z=before;
-        if(zeichen==="a") z+=String.fromCodePoint(96+i);
-        else if(zeichen==="1") z+=i;
-        else if(zeichen==="A") z+=String.fromCodePoint(64+i);
+        if(zeichen==="a") z+=String.fromCodePoint(97+index);
+        else if(zeichen==="1") z+=index;
+        else if(zeichen==="A") z+=String.fromCodePoint(65+index);
         else z+=zeichen;
         z+=after;
       }
@@ -72,6 +85,6 @@ export default {
     console.log("abc",node);
     let childElements=getChildElements(node);
     console.log(childElements);
-    return this.create(childElements.length,props.spalten,props.zeichen,props.style,pt,scope);
+    return this.create(childElements.length,props.spalten,props.zeichen,props.horizontal, props.style,pt,scope);
   }
 }

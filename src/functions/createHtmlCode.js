@@ -5,6 +5,7 @@ import arbeitsblatt from "../ab-components/arbeitsblatt";
 import aufgabe from "../ab-components/aufgabe";
 import bild from "../ab-components/bild";
 import box from "../ab-components/box";
+import codebox from "../ab-components/codebox";
 import daneben from "../ab-components/daneben";
 import formel from "../ab-components/formel-not-used";
 import fragment from "../ab-components/fragment";
@@ -12,6 +13,12 @@ import fusszeile from "../ab-components/fusszeile";
 import grafik from "../ab-components/grafik";
 import hessenkasten from "../ab-components/hessenkasten";
 import ifelse from "../ab-components/ifelse";
+import jbutton from "../ab-components/jbutton";
+import jframe from "../ab-components/jframe";
+import jlabel from "../ab-components/jlabel";
+import jpanel from "../ab-components/jpanel";
+import jprompt from "../ab-components/jprompt";
+import jtextfield from "../ab-components/jtextfield";
 import karopapier from "../ab-components/karopapier";
 import kopfzeile from "../ab-components/kopfzeile";
 import kreis from "../ab-components/kreis";
@@ -19,6 +26,7 @@ import ksystem from "../ab-components/ksystem";
 import kurve from "../ab-components/kurve";
 import linien from "../ab-components/linien";
 import loop from "../ab-components/loop";
+import material from "../ab-components/material";
 import matheTrainer from "../ab-components/mathe-trainer";
 import notenspiegel from "../ab-components/notenspiegel";
 import pfeil from "../ab-components/pfeil";
@@ -34,7 +42,7 @@ import weblink from "../ab-components/weblink";
 import zentriert from "../ab-components/zentriert";
 
 let SpecialTags={
-  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur, punktspiegel, notenspiegel, achse, linien, rechts
+  arbeitsblatt, aufgabe, abc, grafik, karopapier, kreis, seite, ksystem, bild, fusszeile, box, abstand, kopfzeile, punkte, punkt, loop, "if": ifelse, setup, titel, "mathe-trainer": matheTrainer, fragment, weblink, hessenkasten, daneben, zentriert, punkt, kurve, pfeil, "titel-klausur": titelKlausur, punktspiegel, notenspiegel, achse, linien, rechts, jframe, jlabel, jbutton, jtextfield, jpanel, material, jprompt, codebox
 };
 let IgnoreTags={
   "elseif": true, "else": true
@@ -73,12 +81,14 @@ export default function createFullHtmlCode(ab,code,tree){
     variables: {
       aufgabe: 0,
       seite: 0,
-      punkte: 0
+      punkte: 0,
+      material: 0
     },
     endVariables: {
       aufgabe: 0,
       seite: 0,
-      punkte: 0
+      punkte: 0,
+      material: 0
     },
     templates: {
       "kopfzeile-links": null,
