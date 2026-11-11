@@ -73,14 +73,17 @@ html,body{
   }
 }
 
+body{
+  font-family: sans-serif;
+  font-size: 12pt;
+  text-align: justify;
+}
+
 .seite{
   display: flex;
   flex-direction: column;
   flex: 1;
   position: relative;
-  font-family: sans-serif;
-  font-size: 12pt;
-  text-align: justify;
 }
 
 .seiteninhalt{

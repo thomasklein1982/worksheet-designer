@@ -207,7 +207,9 @@ export function parseNode(code,node,scope,forceTemplateRendering){
   if(!node){
     return newCode;
   }
-  if(node.name==="Element"){
+  if(node.name==="EntityReference"){
+    return code.substring(node.from,node.to);
+  }else if(node.name==="Element"){
     let tag=node;
     let openTag=tag.firstChild;
     let nameTag=openTag.firstChild.nextSibling;
